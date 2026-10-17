@@ -215,7 +215,7 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
 
             <div className="relative z-10">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40">
                   <Sparkles className="w-3.5 h-3.5" />
                   Optimal Solar Capacity
                 </span>

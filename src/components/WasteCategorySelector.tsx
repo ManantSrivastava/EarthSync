@@ -53,7 +53,7 @@ export const WasteCategorySelector: React.FC<Props> = ({ selectedId, onSelect })
                 >
                   {getIcon(cat.id)}
                 </div>
-                <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full border border-emerald-300/40">
+                <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-300/40">
                   <Sparkles className="w-3 h-3 text-amber-500" />
                   {cat.pointsPerKg} pts/kg
                 </span>

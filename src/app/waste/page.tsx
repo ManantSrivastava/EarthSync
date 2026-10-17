@@ -58,15 +58,15 @@ export default function WasteManagementPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 mb-2">
             <Recycle className="w-3.5 h-3.5" />
-            <span>Smart Waste Management & Logistics</span>
+            <span>Smart Waste Management and Logistics</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             On-Demand Segregated Waste Collection
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
-            Book doorstep pickups for sorted recyclables. Help divert waste from landfills and earn verifiable GreenPoints upon certified weighing.
+            Book scheduled pickups for clean, sorted recyclables. Divert dry recyclables directly to authorized reprocessing mills and earn verifiable GreenPoints upon certified weighing.
           </p>
         </div>
 
@@ -146,7 +146,7 @@ export default function WasteManagementPage() {
           <History className="w-4 h-4" />
           <span>Pickup History & Lifecycle</span>
           <span
-            className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+            className={`text-[10px] px-1.5 py-0.2 rounded-md font-bold ${
               activeTab === 'history' ? 'bg-emerald-950 text-white' : 'bg-slate-200 text-slate-700'
             }`}
           >

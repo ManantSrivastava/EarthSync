@@ -42,7 +42,8 @@ interface EarthSyncContextType {
     notes?: string;
   }) => { success: boolean; error?: string };
   cancelPickup: (id: string) => void;
-  updatePickupStatus: (id: string, newStatus: PickupStatus) => void;
+  updatePickupStatus: (id: string, newStatus: PickupStatus, verifiedWeightKg?: number) => void;
+  updateSolarEnquiryStatus: (id: string, newStatus: SolarEnquiry['status']) => void;
   submitSolarEnquiry: (data: Omit<SolarEnquiry, 'id' | 'submittedAt' | 'status'>) => { success: boolean; error?: string };
   redeemReward: (rewardId: string) => { success: boolean; error?: string };
   dismissToast: (id: string) => void;
@@ -267,17 +268,18 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Update Status & Award Points upon 'Collected'
-  const updatePickupStatus = (id: string, newStatus: PickupStatus) => {
+  const updatePickupStatus = (id: string, newStatus: PickupStatus, verifiedWeightKg?: number) => {
     const target = pickups.find((p) => p.id === id);
     if (!target) return;
 
     let pointsAwarded = target.pointsEarned;
+    const finalWeight = (verifiedWeightKg !== undefined && verifiedWeightKg > 0) ? verifiedWeightKg : target.quantityKg;
 
     // Award points ONLY when transitioning to 'Collected' for the first time
     if (newStatus === 'Collected' && target.status !== 'Collected') {
       const categoryDef = WASTE_CATEGORIES.find((c) => c.id === target.category);
       const pointsRate = categoryDef ? categoryDef.pointsPerKg : 5;
-      pointsAwarded = Math.round(target.quantityKg * pointsRate);
+      pointsAwarded = Math.round(finalWeight * pointsRate);
 
       const updatedProfile: UserProfile = {
         ...userProfile,
@@ -289,7 +291,7 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       const activity: ActivityItem = {
         id: `act-${Date.now()}`,
         title: `+${pointsAwarded} GreenPoints Awarded!`,
-        description: `Verified collection of ${target.quantityKg} kg ${target.categoryLabel}. Thank you for recycling!`,
+        description: `Verified collection of ${finalWeight} kg ${target.categoryLabel}. Thank you for recycling!`,
         timestamp: 'Just now',
         type: 'waste_collected',
         isSample: false,
@@ -299,7 +301,7 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       showToast(
         'success',
         `Collection Verified! (+${pointsAwarded} GreenPoints)`,
-        `Awesome! ${target.quantityKg} kg of ${target.categoryLabel} was collected and processed.`
+        `Awesome! ${finalWeight} kg of ${target.categoryLabel} was collected and processed.`
       );
     } else {
       showToast(
@@ -310,9 +312,32 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const updated = pickups.map((p) => 
-      p.id === id ? { ...p, status: newStatus, pointsEarned: pointsAwarded } : p
+      p.id === id ? { ...p, status: newStatus, quantityKg: finalWeight, pointsEarned: pointsAwarded } : p
     );
     savePickups(updated);
+  };
+
+  // Update Solar Enquiry Status
+  const updateSolarEnquiryStatus = (id: string, newStatus: SolarEnquiry['status']) => {
+    const target = solarEnquiries.find((e) => e.id === id);
+    if (!target) return;
+
+    const updated = solarEnquiries.map((e) =>
+      e.id === id ? { ...e, status: newStatus } : e
+    );
+    saveSolarEnquiries(updated);
+
+    const activity: ActivityItem = {
+      id: `act-${Date.now()}`,
+      title: `Solar Lead Updated: ${newStatus}`,
+      description: `Lead for ${target.fullName} (${target.city}) moved to ${newStatus}.`,
+      timestamp: 'Just now',
+      type: 'solar_enquiry',
+      isSample: false,
+    };
+    saveActivities([activity, ...activities]);
+
+    showToast('info', 'Enquiry Status Updated', `Enquiry for ${target.fullName} is now ${newStatus}.`);
   };
 
   // Submit Solar Enquiry
@@ -437,6 +462,7 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
         addPickup,
         cancelPickup,
         updatePickupStatus,
+        updateSolarEnquiryStatus,
         submitSolarEnquiry,
         redeemReward,
         dismissToast,

@@ -47,8 +47,8 @@ export default function DashboardPage() {
       {/* Hero / Welcome Section */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-forest-950 via-forest-900 to-emerald-950 text-white p-6 sm:p-10 shadow-2xl border border-emerald-800/60">
         <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-800/80 border border-emerald-600/60 text-xs font-semibold text-emerald-200 mb-4">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-800/80 border border-emerald-600/60 text-xs font-semibold text-emerald-200 mb-4">
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
             <span>Integrated CleanTech Operating System</span>
           </div>
 
@@ -57,7 +57,7 @@ export default function DashboardPage() {
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-emerald-100/90 leading-relaxed font-normal">
-            EarthSync bridges localized circular waste management with precision decentralized solar power. Schedule sorted pickups to earn reward points or model your rooftop renewable potential in seconds.
+            EarthSync connects segregated dry recyclable recovery with precision rooftop solar feasibility. Designed to complement municipal waste collection by channeling high-value recyclables to certified processors and providing transparent solar estimates.
           </p>
 
           {/* Quick Actions */}
@@ -228,7 +228,7 @@ export default function DashboardPage() {
                   <p className="text-xs text-slate-500">Circular logistics & categorized segregation</p>
                 </div>
               </div>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
                 6 Categories
               </span>
             </div>
@@ -285,7 +285,7 @@ export default function DashboardPage() {
                   <p className="text-xs text-slate-500">Rooftop sizing, financials & provider leads</p>
                 </div>
               </div>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
                 MNRE Benchmarked
               </span>
             </div>

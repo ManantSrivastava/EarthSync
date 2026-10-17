@@ -30,28 +30,28 @@ export const PickupCard: React.FC<Props> = ({ pickup }) => {
     switch (pickup.status) {
       case 'Requested':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300">
             <Clock3 className="w-3 h-3 text-amber-600" />
             Requested
           </span>
         );
       case 'Scheduled':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-800 border border-sky-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-sky-50 text-sky-800 border border-sky-300">
             <Truck className="w-3 h-3 text-sky-600" />
             Scheduled
           </span>
         );
       case 'Collected':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300">
             <CheckCircle className="w-3 h-3 text-emerald-600" />
             Collected
           </span>
         );
       case 'Cancelled':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-300">
             <Ban className="w-3 h-3 text-slate-500" />
             Cancelled
           </span>
@@ -76,8 +76,8 @@ export const PickupCard: React.FC<Props> = ({ pickup }) => {
             <span className="text-xs text-slate-400 font-mono">#{pickup.id.slice(-6)}</span>
           </div>
 
-          {/* Points Pill */}
-          <div className="flex items-center gap-1 text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+          {/* Points Badge */}
+          <div className="flex items-center gap-1 text-xs font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>
               {pickup.status === 'Collected' ? `+${pickup.pointsEarned} pts` : `Est. +${potentialPoints} pts`}

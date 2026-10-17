@@ -19,7 +19,7 @@ export default function SustainabilityImpactPage() {
 
       {/* Header */}
       <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 mb-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 mb-2">
           <Leaf className="w-3.5 h-3.5 text-emerald-600" />
           <span>ESG & Sustainability Accounting</span>
         </div>

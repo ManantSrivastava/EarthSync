@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import Link from 'next/link';
 import './globals.css';
 import { EarthSyncProvider } from '@/context/EarthSyncContext';
 import { Navigation } from '@/components/Navigation';
@@ -16,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'EarthSync — CleanTech Platform | Smart Waste & SolarSaathi',
+  title: 'EarthSync: CleanTech Platform | Smart Waste & SolarSaathi',
   description:
-    'Unified CleanTech solution integrating on-demand segregated waste logistics, GreenPoints circular incentives, and SolarSaathi precision rooftop solar feasibility.',
+    'Integrated CleanTech web application for recyclable waste collection scheduling, circular GreenPoints incentives, and SolarSaathi precision rooftop solar feasibility.',
   keywords: [
     'CleanTech',
     'Smart Waste Management',
@@ -52,16 +53,40 @@ export default function RootLayout({
                 {children}
               </div>
 
-              {/* Minimal platform footer */}
-              <footer className="border-t border-slate-200/80 bg-white py-6 px-4 sm:px-8 text-center text-xs text-slate-500">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-700">EarthSync CleanTech</span>
-                    <span>•</span>
-                    <span>Essentials of Business Management</span>
+              {/* Comprehensive platform footer with clear boundary disclaimers and legal links */}
+              <footer className="border-t border-slate-200/90 bg-white py-8 px-4 sm:px-8 text-xs text-slate-500">
+                <div className="max-w-7xl mx-auto space-y-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-slate-900 text-sm">EarthSync CleanTech</span>
+                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          Academic MVP
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 mt-1 max-w-xl">
+                        Essentials of Business Management project. EarthSync complements existing municipal waste collection by coordinating specialized recyclable sorting and rooftop solar feasibility. Not affiliated with or replacing local municipal sanitation authorities.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600">
+                      <Link href="/privacy" className="hover:text-emerald-700 transition-colors">
+                        Privacy Policy
+                      </Link>
+                      <span>•</span>
+                      <Link href="/terms" className="hover:text-emerald-700 transition-colors">
+                        Terms of Service
+                      </Link>
+                      <span>•</span>
+                      <Link href="/admin" className="hover:text-emerald-700 transition-colors">
+                        Partner / Admin Console
+                      </Link>
+                    </div>
                   </div>
-                  <div className="text-[11px] text-slate-400">
-                    Local prototype with browser persistence • No paid APIs required
+
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
+                    <span>Client-side storage prototype. Calculations are estimates for academic feasibility planning.</span>
+                    <span>Version 1.0.0 (October 2026)</span>
                   </div>
                 </div>
               </footer>

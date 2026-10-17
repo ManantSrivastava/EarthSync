@@ -32,7 +32,7 @@ export const SolarEnquiryList: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {solarEnquiries.map((enq) => {
           let statusBadge = (
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-300">
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-300">
               <Clock className="w-3 h-3 text-amber-600" />
               {enq.status}
             </span>
@@ -40,14 +40,14 @@ export const SolarEnquiryList: React.FC = () => {
 
           if (enq.status === 'Feasibility Ready') {
             statusBadge = (
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-300">
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-300">
                 <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                 {enq.status}
               </span>
             );
           } else if (enq.status === 'Site Survey Scheduled') {
             statusBadge = (
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-300">
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-sky-800 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-300">
                 <Calendar className="w-3 h-3 text-sky-600" />
                 {enq.status}
               </span>
