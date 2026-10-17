@@ -1,0 +1,243 @@
+import { WasteCategoryInfo, RewardItem, PickupRequest, SolarEnquiry, ActivityItem } from '@/types';
+
+export const WASTE_CATEGORIES: WasteCategoryInfo[] = [
+  {
+    id: 'plastic',
+    name: 'Plastic Waste',
+    icon: 'Package',
+    pointsPerKg: 6,
+    co2SavedPerKg: 1.8,
+    description: 'PET bottles, HDPE containers, cleaned packaging, wrappers & hard plastics.',
+    examples: 'Water bottles, milk jugs, shampoo bottles, clean food containers',
+    color: 'emerald',
+  },
+  {
+    id: 'paper',
+    name: 'Paper & Cardboard',
+    icon: 'FileText',
+    pointsPerKg: 4,
+    co2SavedPerKg: 1.3,
+    description: 'Dry corrugated cardboard, notebooks, newspapers, office stationary.',
+    examples: 'Delivery cartons, newspapers, exam booklets, shredded paper',
+    color: 'amber',
+  },
+  {
+    id: 'metal',
+    name: 'Metal & Aluminum',
+    icon: 'Shield',
+    pointsPerKg: 10,
+    co2SavedPerKg: 4.5,
+    description: 'Beverage cans, scrap metal, copper wiring, tin food cans.',
+    examples: 'Soda cans, aerosol cans (empty), metal lids, aluminum foil trays',
+    color: 'slate',
+  },
+  {
+    id: 'glass',
+    name: 'Glass Bottles & Jars',
+    icon: 'Wine',
+    pointsPerKg: 3,
+    co2SavedPerKg: 0.8,
+    description: 'Whole or crushed beverage bottles, laboratory glassware, glass jars.',
+    examples: 'Beverage bottles, cosmetic jars, sauce containers (rinse before pickup)',
+    color: 'teal',
+  },
+  {
+    id: 'ewaste',
+    name: 'Electronic Waste (E-Waste)',
+    icon: 'Cpu',
+    pointsPerKg: 18,
+    co2SavedPerKg: 9.2,
+    description: 'Old mobile phones, chargers, laptops, circuit boards, batteries, cords.',
+    examples: 'Dead batteries, earphones, old routers, broken motherboards, cables',
+    color: 'indigo',
+  },
+  {
+    id: 'organic',
+    name: 'Organic & Food Waste',
+    icon: 'Leaf',
+    pointsPerKg: 2,
+    co2SavedPerKg: 0.6,
+    description: 'Cafeteria vegetable scraps, coffee grounds, garden clippings for composting.',
+    examples: 'Fruit peelings, vegetable trim, tea leaves, dry leaves (no meat/dairy)',
+    color: 'green',
+  },
+];
+
+export const SOLAR_REGIONS: { state: string; peakSunHours: number; averageTariff: number }[] = [
+  { state: 'Delhi NCR', peakSunHours: 4.8, averageTariff: 7.5 },
+  { state: 'Maharashtra', peakSunHours: 5.1, averageTariff: 9.2 },
+  { state: 'Karnataka', peakSunHours: 5.2, averageTariff: 8.4 },
+  { state: 'Gujarat', peakSunHours: 5.5, averageTariff: 7.8 },
+  { state: 'Rajasthan', peakSunHours: 5.8, averageTariff: 8.0 },
+  { state: 'Tamil Nadu', peakSunHours: 5.0, averageTariff: 7.2 },
+  { state: 'Telangana', peakSunHours: 5.2, averageTariff: 8.5 },
+  { state: 'Uttar Pradesh', peakSunHours: 4.7, averageTariff: 7.0 },
+  { state: 'West Bengal', peakSunHours: 4.5, averageTariff: 7.6 },
+  { state: 'Kerala', peakSunHours: 4.6, averageTariff: 7.4 },
+];
+
+export const SOLAR_BENCHMARK_ASSUMPTIONS = {
+  systemEfficiency: 0.78, // 78% Performance Ratio after thermal & inverter losses
+  spacePerKwSqFt: 90,     // 90 sq ft required per 1 kWp panel capacity
+  costPerKwInr: 54000,    // Industry benchmark capital cost per kW in INR
+  tariffEscalationRatePercent: 3.5, // Expected annual tariff increase %
+  co2FactorPerKwh: 0.82,  // kg of CO2e avoided per kWh of solar generation vs Indian grid
+  treeAbsorptionKgPerYr: 21, // ~21 kg CO2 absorbed by one mature tree annually
+};
+
+export const REWARD_ITEMS: RewardItem[] = [
+  {
+    id: 'rw-1',
+    title: '₹150 Campus Green Cafeteria Voucher',
+    description: 'Valid for eco-friendly meals and organic beverages across campus cafes.',
+    pointsCost: 150,
+    category: 'campus_perk',
+    badge: 'Popular',
+    partner: 'University EcoDine',
+  },
+  {
+    id: 'rw-2',
+    title: 'Verified Tree Plantation Certificate',
+    description: 'We sponsor and plant 1 native geo-tagged sapling in our urban micro-forest project.',
+    pointsCost: 200,
+    category: 'carbon_offset',
+    badge: 'High Impact',
+    partner: 'SankalpTaru Foundation Partner',
+  },
+  {
+    id: 'rw-3',
+    title: '₹1,500 Off Rooftop Solar Technical Audit',
+    description: 'Comprehensive drone thermal shading analysis and structural feasibility report.',
+    pointsCost: 350,
+    category: 'solar_discount',
+    badge: 'SolarSaathi Special',
+    partner: 'SolarSaathi Certified Engineers',
+  },
+  {
+    id: 'rw-4',
+    title: 'EarthSync Recycled Stainless Steel Bottle',
+    description: 'Double-walled insulated 750ml flask made from 90% post-consumer recycled steel.',
+    pointsCost: 280,
+    category: 'voucher',
+    badge: 'Zero-Waste Gear',
+    partner: 'EarthSync Merch',
+  },
+  {
+    id: 'rw-5',
+    title: 'Public Transit Metro Pass Recharge (₹200)',
+    description: 'Clean commute incentive credited directly to your registered transit card.',
+    pointsCost: 300,
+    category: 'campus_perk',
+    badge: 'Clean Mobility',
+    partner: 'City SmartTransit',
+  },
+];
+
+export const INITIAL_SAMPLE_PICKUPS: PickupRequest[] = [
+  {
+    id: 'pk-demo-101',
+    category: 'ewaste',
+    categoryLabel: 'Electronic Waste (E-Waste)',
+    quantityKg: 6.5,
+    pickupAddress: 'Block C, Engineering Labs, Ground Floor Store, Campus North',
+    preferredDate: '2026-10-22',
+    timeSlot: 'Morning (08:00 - 11:00)',
+    notes: 'Outdated PCB boards and 4 retired desktop UPS units packaged in cartons.',
+    status: 'Collected',
+    pointsEarned: 117,
+    createdAt: '2026-10-14T09:30:00Z',
+    isSample: true,
+  },
+  {
+    id: 'pk-demo-102',
+    category: 'paper',
+    categoryLabel: 'Paper & Cardboard',
+    quantityKg: 28,
+    pickupAddress: 'Library Archives & Central Repository, Room 204',
+    preferredDate: '2026-10-20',
+    timeSlot: 'Afternoon (12:00 - 15:00)',
+    notes: 'Archived project files, packaging boxes, and scrap printouts bundled with twine.',
+    status: 'Scheduled',
+    pointsEarned: 0,
+    createdAt: '2026-10-16T11:15:00Z',
+    isSample: true,
+  },
+  {
+    id: 'pk-demo-103',
+    category: 'plastic',
+    categoryLabel: 'Plastic Waste',
+    quantityKg: 14.2,
+    pickupAddress: 'Student Hostel 4 Dining Hall Rear Dock',
+    preferredDate: '2026-10-24',
+    timeSlot: 'Morning (08:00 - 11:00)',
+    notes: 'Crushed PET drinking water bottles and clean polypropylene containers.',
+    status: 'Requested',
+    pointsEarned: 0,
+    createdAt: '2026-10-17T14:00:00Z',
+    isSample: true,
+  },
+];
+
+export const INITIAL_SAMPLE_ENQUIRIES: SolarEnquiry[] = [
+  {
+    id: 'sol-demo-201',
+    fullName: 'Dr. Ramesh Kulkarni (Estate Management)',
+    phone: '+91 98765 43210',
+    email: 'ramesh.k@univ-campus.edu',
+    city: 'Pune, Maharashtra',
+    address: 'Faculty Residential Complex, Sector 9',
+    systemType: 'On-Grid (Net Metered)',
+    financingPreference: 'Direct Outright Purchase',
+    suggestedCapacityKw: 5.5,
+    estimatedCostInr: 297000,
+    monthlySavingsInr: 6850,
+    notes: 'Interested in installing panels atop 800 sq ft RCC flat roof with net-metering approval.',
+    status: 'Feasibility Ready',
+    submittedAt: '2026-10-12T10:00:00Z',
+    isSample: true,
+  },
+  {
+    id: 'sol-demo-202',
+    fullName: 'Pooja Deshmukh',
+    phone: '+91 97123 88412',
+    email: 'pooja.desh@urbanhomes.in',
+    city: 'Bengaluru, Karnataka',
+    address: '42 Orchid Villa, Indiranagar',
+    systemType: 'Hybrid Solar',
+    financingPreference: 'Solar Loan / EMI',
+    suggestedCapacityKw: 3.2,
+    estimatedCostInr: 172800,
+    monthlySavingsInr: 3950,
+    notes: 'Require battery backup for 4 hours of evening load during frequent monsoon grid outages.',
+    status: 'Site Survey Scheduled',
+    submittedAt: '2026-10-15T16:45:00Z',
+    isSample: true,
+  },
+];
+
+export const INITIAL_SAMPLE_ACTIVITIES: ActivityItem[] = [
+  {
+    id: 'act-1',
+    title: 'E-Waste Pickup Successfully Processed',
+    description: '6.5 kg e-waste collected. +117 GreenPoints awarded to Campus Labs account.',
+    timestamp: '2 hours ago',
+    type: 'waste_collected',
+    isSample: true,
+  },
+  {
+    id: 'act-2',
+    title: 'Solar Feasibility Model Generated',
+    description: '5.5 kWp system proposal generated with estimated ₹82,200 annual bill reduction.',
+    timestamp: '5 hours ago',
+    type: 'solar_enquiry',
+    isSample: true,
+  },
+  {
+    id: 'act-3',
+    title: 'Paper Collection Scheduled',
+    description: 'Pickup scheduled for Library Archives (28 kg) on Oct 20 with green logistics partner.',
+    timestamp: 'Yesterday',
+    type: 'waste_pickup',
+    isSample: true,
+  },
+];
