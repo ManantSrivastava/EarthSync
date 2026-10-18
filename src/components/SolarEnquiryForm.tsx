@@ -77,7 +77,7 @@ export const SolarEnquiryForm: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-2xl w-full">
+    <div className="bg-white rounded-xl border border-stone-200 shadow-xl overflow-hidden max-w-2xl w-full">
       {/* Header */}
       <div className="bg-gradient-to-r from-forest-950 to-emerald-950 p-6 text-white flex items-start justify-between">
         <div>

@@ -208,7 +208,7 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
         {/* Results Panel (Right: 7 cols) */}
         <div className="lg:col-span-7 space-y-5">
           {/* Main Solar Sizing Card */}
-          <div className="bg-gradient-to-br from-forest-950 via-forest-900 to-emerald-950 text-white rounded-3xl p-6 shadow-xl border border-emerald-800/60 relative overflow-hidden">
+          <div className="bg-stone-900 text-white rounded-xl p-6 shadow-xs border border-stone-800 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
               <Sun className="w-56 h-56 text-amber-300" />
             </div>

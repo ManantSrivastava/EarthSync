@@ -5,288 +5,213 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEarthSync } from '@/context/EarthSyncContext';
 import { 
-  LayoutDashboard, 
-  Recycle, 
-  Sun, 
-  TrendingUp, 
-  Briefcase, 
+  Leaf, 
   Menu, 
   X, 
-  Sparkles, 
+  RotateCcw, 
+  Sparkles,
+  ArrowRight,
   ShieldCheck,
-  RotateCcw,
-  Leaf,
-  SlidersHorizontal
+  LayoutDashboard
 } from 'lucide-react';
 
 export const Navigation: React.FC = () => {
   const pathname = usePathname();
-  const { userProfile, pickups, isHydrated, resetAllData, loadSampleData } = useEarthSync();
+  const { userProfile, isHydrated, resetAllData, loadSampleData } = useEarthSync();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showDemoModal, setShowDemoModal] = useState(false);
 
-  const activePickupsCount = pickups.filter(
-    (p) => p.status === 'Requested' || p.status === 'Scheduled'
-  ).length;
-
   const navLinks = [
-    {
-      name: 'Dashboard',
-      href: '/',
-      icon: LayoutDashboard,
-      badge: null,
-    },
-    {
-      name: 'Smart Waste',
-      href: '/waste',
-      icon: Recycle,
-      badge: activePickupsCount > 0 ? `${activePickupsCount} active` : null,
-      badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
-    },
-    {
-      name: 'SolarSaathi',
-      href: '/solar',
-      icon: Sun,
-      badge: 'Estimator',
-      badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
-    },
-    {
-      name: 'Impact & Analytics',
-      href: '/impact',
-      icon: TrendingUp,
-      badge: null,
-    },
-    {
-      name: 'Business & Profile',
-      href: '/profile',
-      icon: Briefcase,
-      badge: null,
-    },
-    {
-      name: 'Partner Console',
-      href: '/admin',
-      icon: SlidersHorizontal,
-      badge: 'Demo',
-      badgeColor: 'bg-slate-800 text-slate-200 border-slate-700',
-    },
+    { name: 'Home', href: '/' },
+    { name: 'Smart Waste', href: '/waste' },
+    { name: 'SolarSaathi', href: '/solar' },
+    { name: 'Impact', href: '/impact' },
+    { name: 'About', href: '/#about' },
+    { name: 'Dashboard', href: '/dashboard' },
   ];
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
+    if (href.startsWith('/#')) return false;
     return pathname.startsWith(href);
   };
 
   return (
     <>
-      {/* Top Mobile Bar */}
-      <header className="lg:hidden sticky top-0 z-40 bg-emerald-950/95 backdrop-blur-md border-b border-emerald-900/40 text-white px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 font-bold tracking-tight text-lg">
-          <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shadow-inner shadow-emerald-400/30">
-            <Leaf className="w-5 h-5 text-emerald-100" />
-          </div>
-          <span className="text-white">Earth<span className="text-amber-400">Sync</span></span>
-          <span className="text-[10px] bg-emerald-900/90 text-emerald-300 px-1.5 py-0.5 rounded-md border border-emerald-700/50 uppercase tracking-widest font-semibold">
-            CleanTech
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {/* GreenPoints Quick Chip (Rectangular with modest radius, no pill button) */}
-          <Link
-            href="/profile"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-900/80 border border-emerald-700/60 text-xs font-semibold text-amber-300"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>{isHydrated ? userProfile.greenPointsBalance : '...'} pts</span>
+      {/* Sticky Horizontal Top Navbar */}
+      <header className="sticky top-0 z-50 bg-stone-50/95 backdrop-blur-md border-b border-stone-200/90 text-stone-900 transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+          
+          {/* Brand Logo & Wordmark on Left */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="w-9 h-9 rounded-md bg-emerald-800 flex items-center justify-center text-white shadow-xs group-hover:bg-emerald-900 transition-colors">
+              <Leaf className="w-5 h-5 text-emerald-200" />
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5 font-bold tracking-tight text-lg text-emerald-950 leading-tight">
+                <span>Earth</span>
+                <span className="text-emerald-700">Sync</span>
+              </div>
+              <span className="text-[10px] font-medium tracking-wide text-stone-500 uppercase">
+                CleanTech Platform
+              </span>
+            </div>
           </Link>
 
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-emerald-900/60 border border-emerald-800/80 text-emerald-200 hover:text-white cursor-pointer"
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[57px] z-40 bg-emerald-950/98 border-b border-emerald-800/80 p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top-2">
-          <nav className="flex flex-col gap-1.5">
+          {/* Desktop Horizontal Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             {navLinks.map((link) => {
-              const Icon = link.icon;
               const active = isActive(link.href);
               return (
                 <Link
-                  key={link.href}
+                  key={link.name}
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg font-medium text-sm transition-all ${
+                  className={`px-3.5 py-2 rounded-md text-sm font-medium transition-colors ${
                     active
-                      ? 'bg-emerald-800 text-white shadow-sm'
-                      : 'text-emerald-200 hover:bg-emerald-900/50 hover:text-white'
+                      ? 'text-emerald-900 bg-emerald-50/90 font-semibold'
+                      : 'text-stone-600 hover:text-emerald-900 hover:bg-stone-100/80'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${active ? 'text-amber-400' : 'text-emerald-400'}`} />
-                    <span>{link.name}</span>
-                  </div>
-                  {link.badge && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold border bg-emerald-900/70 text-emerald-200 border-emerald-700">
-                      {link.badge}
-                    </span>
-                  )}
+                  {link.name}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-4 pt-3 border-t border-emerald-800/50 flex items-center justify-between">
-            <button
-              onClick={() => {
-                setShowDemoModal(true);
-                setMobileMenuOpen(false);
-              }}
-              className="text-xs text-emerald-300 hover:text-amber-300 flex items-center gap-1.5 py-1 cursor-pointer"
+          {/* Right Action Cluster */}
+          <div className="hidden sm:flex items-center gap-3">
+            {/* GreenPoints Chip */}
+            <Link
+              href="/profile"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900 hover:bg-emerald-100 transition-colors"
+              title="View GreenPoints Wallet"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Demo Controls</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <span>{isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '...'} pts</span>
+            </Link>
+
+            {/* Demo Controls Button */}
+            <button
+              onClick={() => setShowDemoModal(true)}
+              className="px-2.5 py-1.5 rounded-md border border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100 text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
+              title="Presentation demo state controls"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-stone-500" />
+              <span className="hidden lg:inline">Demo Data</span>
             </button>
-            <span className="text-[11px] text-emerald-400/80">College BM Project 2026</span>
+
+            {/* Clear Rectangular "Get Started" Button */}
+            <Link
+              href="/waste"
+              className="px-4 py-2 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-xs tracking-wide transition-colors shadow-xs flex items-center gap-1.5"
+            >
+              <span>Get Started</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* Mobile Right Bar: Hamburger Menu Button */}
+          <div className="flex sm:hidden items-center gap-2">
+            <Link
+              href="/profile"
+              className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <span>{isHydrated ? userProfile.greenPointsBalance : '0'}</span>
+            </Link>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-md border border-stone-200 text-stone-700 hover:bg-stone-100 cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
-      )}
 
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 flex-col fixed inset-y-0 left-0 z-30 bg-forest-950 text-white border-r border-emerald-900/40">
-        {/* Brand */}
-        <div className="p-5 border-b border-emerald-900/50 flex flex-col gap-2">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center shadow-md shadow-emerald-900/50 group-hover:scale-105 transition-transform">
-              <Leaf className="w-5 h-5 text-emerald-50" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1 font-bold tracking-tight text-lg leading-none">
-                <span>Earth</span>
-                <span className="text-amber-400">Sync</span>
-              </div>
-              <span className="text-[10px] font-medium tracking-wide text-emerald-400/90 uppercase">
-                CleanTech Unified Platform
-              </span>
-            </div>
-          </Link>
-
-          {/* Academic Badge */}
-          <div className="mt-1 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-900/50 border border-emerald-800/60 text-[11px] text-emerald-300">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span className="truncate">Essentials of Business Mgmt</span>
-          </div>
-        </div>
-
-        {/* Navigation Links */}
-        <div className="flex-1 py-4 px-3 overflow-y-auto space-y-1">
-          <div className="px-3 pb-2 text-[10px] font-semibold text-emerald-400/70 uppercase tracking-wider">
-            Primary Navigation
-          </div>
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            const active = isActive(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  active
-                    ? 'bg-emerald-800/90 text-white font-semibold shadow-sm border border-emerald-700/60'
-                    : 'text-emerald-100/80 hover:bg-emerald-900/40 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className={`w-4 h-4 ${active ? 'text-amber-400' : 'text-emerald-400'}`} />
-                  <span>{link.name}</span>
-                </div>
-                {link.badge && (
-                  <span
-                    className={`text-[10px] px-2 py-0.5 rounded-md font-bold border ${
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-stone-200 bg-stone-50 p-4 shadow-lg animate-in slide-in-from-top-1">
+            <nav className="flex flex-col gap-1">
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                       active
-                        ? 'bg-emerald-950 text-amber-300 border-amber-400/40'
-                        : link.badgeColor
+                        ? 'text-emerald-900 bg-emerald-100/80 font-bold'
+                        : 'text-stone-700 hover:bg-stone-100'
                     }`}
                   >
-                    {link.badge}
-                  </span>
-                )}
+                    {link.name}
+                  </Link>
+                );
+              })}
+
+              <Link
+                href="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100"
+              >
+                Partner Console
               </Link>
-            );
-          })}
-        </div>
+            </nav>
 
-        {/* GreenPoints Wallet Summary */}
-        <div className="p-3 mx-3 mb-3 rounded-xl bg-forest-900/90 border border-emerald-700/50 shadow-inner">
-          <div className="flex items-center justify-between text-xs text-emerald-300 mb-1">
-            <span className="flex items-center gap-1 font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              GreenPoints Wallet
-            </span>
-            <span className="text-[10px] bg-emerald-800/90 text-amber-300 px-1.5 py-0.2 rounded-md border border-amber-400/30">
-              Tier 1
-            </span>
+            <div className="mt-4 pt-4 border-t border-stone-200 flex flex-col gap-2.5">
+              <Link
+                href="/waste"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center py-2.5 px-4 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-xs tracking-wide shadow-xs"
+              >
+                Get Started
+              </Link>
+
+              <button
+                onClick={() => {
+                  setShowDemoModal(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center py-2 px-3 rounded-md border border-stone-200 text-xs font-medium text-stone-600 hover:bg-stone-100 flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-stone-500" />
+                <span>Presentation Demo Controls</span>
+              </button>
+            </div>
           </div>
-          <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-2xl font-black text-amber-300 tracking-tight">
-              {isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '...'}
-            </span>
-            <span className="text-xs text-emerald-200">PTS</span>
-          </div>
-          <p className="text-[11px] text-emerald-300/80 mt-1 leading-snug">
-            Credited exclusively on verified driver collections.
-          </p>
-          <Link
-            href="/profile"
-            className="mt-2.5 block text-center text-xs font-semibold py-1.5 px-2 rounded-lg bg-emerald-700/80 hover:bg-emerald-600 text-white transition-colors"
-          >
-            Redeem Rewards →
-          </Link>
-        </div>
+        )}
+      </header>
 
-        {/* Footer & Demo Toggle */}
-        <div className="p-3 border-t border-emerald-900/50 flex items-center justify-between text-xs text-emerald-400/80">
-          <button
-            onClick={() => setShowDemoModal(true)}
-            className="hover:text-amber-300 flex items-center gap-1.5 transition-colors py-1 px-1.5 rounded-md hover:bg-emerald-900/40 cursor-pointer"
-            title="Manage presentation demo data"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Demo Data State</span>
-          </button>
-          <span className="text-[10px] text-emerald-500">v1.0 MVP</span>
-        </div>
-      </aside>
-
-      {/* Demo Controls Modal */}
+      {/* Demo Presentation Modal */}
       {showDemoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border border-slate-200 text-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/50 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-stone-200 text-stone-800">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-base font-bold text-slate-900">Demo Presentation Controller</h3>
-                <p className="text-xs text-slate-500 mt-1">
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-semibold mb-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Business Management MVP</span>
+                </div>
+                <h3 className="text-base font-bold text-stone-900">Demo Presentation Controller</h3>
+                <p className="text-xs text-stone-500 mt-1">
                   Control mock data for your Business Management project presentation.
                 </p>
               </div>
               <button
                 onClick={() => setShowDemoModal(false)}
-                className="p-1 rounded-md hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="p-1.5 rounded-md hover:bg-stone-100 text-stone-400 hover:text-stone-700 cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="mt-5 space-y-3">
-              <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-900">
-                <span className="font-semibold block mb-0.5">Presentation Tip:</span>
-                Sample entries are marked with a <span className="bg-emerald-200 font-bold px-1 rounded-md text-emerald-800">SAMPLE</span> tag. When you schedule a new pickup or submit a solar enquiry, it will be saved locally as live user data.
+              <div className="p-3.5 rounded-lg bg-stone-50 border border-stone-200 text-xs text-stone-700 leading-relaxed">
+                <span className="font-semibold text-stone-900 block mb-1">Evaluation Note:</span>
+                Sample records are labeled with a <span className="bg-stone-200 text-stone-800 font-bold px-1.5 py-0.5 rounded text-[10px]">SAMPLE</span> tag. Any new collection requests or solar enquiries you create are saved locally in your browser.
               </div>
 
               <div className="flex flex-col gap-2 pt-2">
@@ -295,10 +220,10 @@ export const Navigation: React.FC = () => {
                     loadSampleData();
                     setShowDemoModal(false);
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs transition-colors shadow-sm cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white font-semibold text-xs transition-colors shadow-xs cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  Load Sample Baseline Data
+                  <span>Reload Baseline Sample Data</span>
                 </button>
 
                 <button
@@ -306,9 +231,9 @@ export const Navigation: React.FC = () => {
                     resetAllData();
                     setShowDemoModal(false);
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 font-medium text-xs transition-colors border border-slate-200 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md bg-stone-100 hover:bg-rose-50 hover:text-rose-700 text-stone-700 font-medium text-xs transition-colors border border-stone-200 cursor-pointer"
                 >
-                  Clear All & Start Clean
+                  <span>Clear All Stored Data</span>
                 </button>
               </div>
             </div>

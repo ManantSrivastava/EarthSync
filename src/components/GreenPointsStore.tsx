@@ -11,7 +11,7 @@ export const GreenPointsStore: React.FC = () => {
   return (
     <div className="space-y-5">
       {/* Wallet Balance Hero */}
-      <div className="p-6 rounded-3xl bg-gradient-to-br from-forest-950 via-forest-900 to-emerald-950 text-white shadow-xl border border-emerald-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-xl bg-stone-900 text-white shadow-xs border border-stone-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-emerald-300 mb-1">
             <Sparkles className="w-4 h-4 text-amber-400" />

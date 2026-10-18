@@ -5,6 +5,7 @@ import './globals.css';
 import { EarthSyncProvider } from '@/context/EarthSyncContext';
 import { Navigation } from '@/components/Navigation';
 import { ToastContainer } from '@/components/ToastContainer';
+import { Leaf, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'EarthSync: CleanTech Platform | Smart Waste & SolarSaathi',
   description:
-    'Integrated CleanTech web application for recyclable waste collection scheduling, circular GreenPoints incentives, and SolarSaathi precision rooftop solar feasibility.',
+    'EarthSync brings smarter recyclable waste management and rooftop solar estimation together in one simple platform.',
   keywords: [
     'CleanTech',
     'Smart Waste Management',
@@ -41,57 +42,146 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 font-sans">
+      <body className="min-h-full flex flex-col bg-stone-50 text-stone-900 font-sans selection:bg-emerald-100 selection:text-emerald-900">
         <EarthSyncProvider>
-          <div className="flex min-h-screen">
-            {/* Sidebar navigation */}
-            <Navigation />
+          {/* Top Horizontal Navbar */}
+          <Navigation />
 
-            {/* Main scrollable body */}
-            <main className="flex-1 lg:pl-64 flex flex-col min-w-0">
-              <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-                {children}
-              </div>
+          {/* Main scrollable content */}
+          <main className="flex-1 w-full flex flex-col">
+            {children}
+          </main>
 
-              {/* Comprehensive platform footer with clear boundary disclaimers and legal links */}
-              <footer className="border-t border-slate-200/90 bg-white py-8 px-4 sm:px-8 text-xs text-slate-500">
-                <div className="max-w-7xl mx-auto space-y-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-slate-900 text-sm">EarthSync CleanTech</span>
-                        <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                          Academic MVP
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-1 max-w-xl">
-                        Essentials of Business Management project. EarthSync complements existing municipal waste collection by coordinating specialized recyclable sorting and rooftop solar feasibility. Not affiliated with or replacing local municipal sanitation authorities.
-                      </p>
+          {/* Professional Editorial Footer */}
+          <footer className="border-t border-stone-200 bg-white text-stone-600 text-xs mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-stone-100">
+                {/* Brand & Purpose */}
+                <div className="lg:col-span-2 space-y-4">
+                  <Link href="/" className="inline-flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-md bg-emerald-800 flex items-center justify-center text-white">
+                      <Leaf className="w-4 h-4 text-emerald-200" />
                     </div>
+                    <span className="font-bold text-lg text-emerald-950 tracking-tight">
+                      Earth<span className="text-emerald-700">Sync</span>
+                    </span>
+                  </Link>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600">
-                      <Link href="/privacy" className="hover:text-emerald-700 transition-colors">
-                        Privacy Policy
-                      </Link>
-                      <span>•</span>
-                      <Link href="/terms" className="hover:text-emerald-700 transition-colors">
-                        Terms of Service
-                      </Link>
-                      <span>•</span>
-                      <Link href="/admin" className="hover:text-emerald-700 transition-colors">
-                        Partner / Admin Console
-                      </Link>
-                    </div>
-                  </div>
+                  <p className="text-xs text-stone-600 leading-relaxed max-w-sm">
+                    An integrated CleanTech web platform bringing scheduled recyclable dry waste collection and precision rooftop solar feasibility together in one unified interface.
+                  </p>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
-                    <span>Client-side storage prototype. Calculations are estimates for academic feasibility planning.</span>
-                    <span>Version 1.0.0 (October 2026)</span>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-stone-100 border border-stone-200 text-[11px] text-stone-700 font-medium">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Academic Project | Essentials of Business Management</span>
                   </div>
                 </div>
-              </footer>
-            </main>
-          </div>
+
+                {/* Column 1: Core Navigation */}
+                <div className="space-y-3">
+                  <h4 className="font-bold text-stone-900 uppercase tracking-wider text-[11px]">
+                    Platform
+                  </h4>
+                  <ul className="space-y-2 text-xs">
+                    <li>
+                      <Link href="/" className="hover:text-emerald-800 transition-colors">
+                        Home Overview
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/waste" className="hover:text-emerald-800 transition-colors">
+                        Smart Waste Booking
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/solar" className="hover:text-emerald-800 transition-colors">
+                        SolarSaathi Calculator
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/impact" className="hover:text-emerald-800 transition-colors">
+                        Impact & LCA Analytics
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/dashboard" className="hover:text-emerald-800 transition-colors">
+                        Resource Dashboard
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Column 2: Ecosystem & Rewards */}
+                <div className="space-y-3">
+                  <h4 className="font-bold text-stone-900 uppercase tracking-wider text-[11px]">
+                    Ecosystem
+                  </h4>
+                  <ul className="space-y-2 text-xs">
+                    <li>
+                      <Link href="/profile" className="hover:text-emerald-800 transition-colors">
+                        GreenPoints Rewards
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/profile" className="hover:text-emerald-800 transition-colors">
+                        Business Model Canvas
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/solar" className="hover:text-emerald-800 transition-colors">
+                        PM Surya Ghar Subsidy Guide
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/admin" className="hover:text-emerald-800 transition-colors flex items-center gap-1">
+                        <span>Partner Console</span>
+                        <ArrowUpRight className="w-3 h-3 text-stone-400" />
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Column 3: Legal & Privacy */}
+                <div className="space-y-3">
+                  <h4 className="font-bold text-stone-900 uppercase tracking-wider text-[11px]">
+                    Transparency
+                  </h4>
+                  <ul className="space-y-2 text-xs">
+                    <li>
+                      <Link href="/privacy" className="hover:text-emerald-800 transition-colors">
+                        Privacy Policy
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/terms" className="hover:text-emerald-800 transition-colors">
+                        Terms of Service
+                      </Link>
+                    </li>
+                    <li>
+                      <span className="text-stone-400">LocalStorage MVP</span>
+                    </li>
+                    <li>
+                      <span className="text-stone-400">v1.0 (October 2026)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Bottom Copyright & Disclaimer */}
+              <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-stone-400">
+                <p>
+                  © 2026 EarthSync CleanTech. Academic demonstration prototype. Not affiliated with or replacing local municipal daily sanitation authorities.
+                </p>
+                <div className="flex items-center gap-4 text-stone-500">
+                  <Link href="/privacy" className="hover:text-emerald-800">Privacy</Link>
+                  <span>•</span>
+                  <Link href="/terms" className="hover:text-emerald-800">Terms</Link>
+                  <span>•</span>
+                  <Link href="/admin" className="hover:text-emerald-800">Operations Demo</Link>
+                </div>
+              </div>
+            </div>
+          </footer>
 
           <ToastContainer />
         </EarthSyncProvider>

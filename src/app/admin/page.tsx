@@ -64,7 +64,7 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8 animate-in fade-in duration-300">
       {/* Demo Mode / RBAC Disclaimer */}
       <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 sm:p-5 text-amber-900">
         <div className="flex items-start gap-3">
