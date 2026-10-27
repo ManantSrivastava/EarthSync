@@ -6,13 +6,13 @@ import { SolarCalculator } from '@/components/SolarCalculator';
 import { SolarEnquiryForm } from '@/components/SolarEnquiryForm';
 import { SolarEnquiryList } from '@/components/SolarEnquiryList';
 import { SolarSubsidyGuide } from '@/components/SolarSubsidyGuide';
-import { DemoDataNotice } from '@/components/DemoDataNotice';
 import { 
   Sun, 
   Calculator, 
-  FileText, 
-  Compass,
-  ShieldCheck
+  ShieldCheck, 
+  Compass, 
+  Info,
+  FileText
 } from 'lucide-react';
 
 export default function SolarSaathiPage() {
@@ -31,77 +31,84 @@ export default function SolarSaathiPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8 animate-in fade-in duration-300">
-      {/* Demo Notice */}
-      <DemoDataNotice hasUserEntries={solarEnquiries.some((e) => !e.isSample)} />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8 animate-in fade-in duration-200">
+      
+      {/* Academic Disclaimer Banner */}
+      <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#E2E9E3] text-xs text-[#65736B]">
+        <Info className="w-4 h-4 text-[#063D2E] shrink-0 mt-0.5" />
+        <div className="leading-relaxed">
+          <strong className="text-[#17231E]">CleanTech Academic Feasibility Engine: </strong>
+          SolarSaathi provides mathematical rooftop solar estimations using standard insolation averages. 
+          <span className="text-[#17231E]"> Figures are estimates and not binding quotes or formal government subsidy guarantees.</span>
+        </div>
+      </div>
 
-      {/* Header Banner */}
-      <div className="bg-white rounded-xl border border-stone-200 p-6 sm:p-8 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 mb-2">
-              <Sun className="w-3.5 h-3.5 text-amber-600" />
-              <span>SolarSaathi Clean Energy Engine</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">
-              Rooftop Solar Feasibility & Provider Enquiries
-            </h1>
-            <p className="text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-              Calculate preliminary sizing, capital cost benchmarks, payback trajectory, and carbon displacement. Review verified government subsidy benchmarks under the PM Surya Ghar scheme.
-            </p>
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-lg border border-[#E2E9E3]">
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[#FFB800]/15 text-[#17231E] border border-[#FFB800]/40">
+            <Sun className="w-3.5 h-3.5 text-[#FFB800]" />
+            <span>Service 02</span>
           </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#17231E] tracking-tight">
+            SolarSaathi
+          </h1>
+          <p className="text-sm text-[#65736B] max-w-2xl leading-relaxed">
+            Understand your rooftop&apos;s solar potential.
+          </p>
+        </div>
 
-          <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
-            <button
-              onClick={() => {
-                setModalInitialData({ capacityKw: 3.5, estimatedCost: 189000, monthlySavings: 4200 });
-                setEnquiryModalOpen(true);
-              }}
-              className="px-4 py-2.5 rounded-md bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-wide shadow-xs transition-colors flex items-center gap-2 cursor-pointer"
-            >
-              <FileText className="w-4 h-4 text-amber-400" />
-              <span>Log Installer Enquiry</span>
-            </button>
-          </div>
+        {/* Action Button */}
+        <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
+          <button
+            onClick={() => {
+              setModalInitialData({ capacityKw: 3.5, estimatedCost: 189000, monthlySavings: 4200 });
+              setEnquiryModalOpen(true);
+            }}
+            className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center gap-2 cursor-pointer"
+          >
+            <FileText className="w-3.5 h-3.5 text-[#FFB800]" />
+            <span>Log Demo Enquiry</span>
+          </button>
         </div>
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-2">
+      <div className="flex flex-wrap items-center gap-2 border-b border-[#E2E9E3] pb-2">
         <button
           onClick={() => setActiveTab('calculator')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
             activeTab === 'calculator'
-              ? 'bg-stone-900 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+              ? 'bg-[#063D2E] text-white'
+              : 'text-[#65736B] hover:bg-white hover:text-[#17231E]'
           }`}
         >
           <Calculator className="w-4 h-4" />
-          <span>Solar Estimator</span>
+          <span>Solar Calculator</span>
         </button>
 
         <button
           onClick={() => setActiveTab('subsidies')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
             activeTab === 'subsidies'
-              ? 'bg-stone-900 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+              ? 'bg-[#063D2E] text-white'
+              : 'text-[#65736B] hover:bg-white hover:text-[#17231E]'
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
-          <span>Government Subsidy Guide</span>
+          <span>Subsidy Benchmarks</span>
         </button>
 
         <button
           onClick={() => setActiveTab('enquiries')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
             activeTab === 'enquiries'
-              ? 'bg-stone-900 text-white shadow-xs'
-              : 'text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+              ? 'bg-[#063D2E] text-white'
+              : 'text-[#65736B] hover:bg-white hover:text-[#17231E]'
           }`}
         >
           <Compass className="w-4 h-4" />
-          <span>Submitted Enquiries ({solarEnquiries.length})</span>
+          <span>Saved Demo Enquiries ({solarEnquiries.length})</span>
         </button>
       </div>
 
@@ -112,7 +119,7 @@ export default function SolarSaathiPage() {
 
       {/* Modal for Enquiry Form */}
       {enquiryModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/50 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto">
           <div className="my-8 max-w-2xl w-full">
             <SolarEnquiryForm
               initialCapacityKw={modalInitialData.capacityKw}
@@ -127,6 +134,7 @@ export default function SolarSaathiPage() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

@@ -3,114 +3,97 @@
 import React, { useState } from 'react';
 import { useEarthSync } from '@/context/EarthSyncContext';
 import { PickupCard } from './PickupCard';
-import { PickupStatus } from '@/types';
 import { PackageOpen, Filter, Plus } from 'lucide-react';
 
 interface Props {
   onOpenSchedule?: () => void;
 }
 
+type FilterType = 'All' | 'Pending' | 'Scheduled' | 'Completed' | 'Cancelled';
+
 export const PickupList: React.FC<Props> = ({ onOpenSchedule }) => {
   const { pickups } = useEarthSync();
-  const [filter, setFilter] = useState<PickupStatus | 'All' | 'Active'>('All');
+  const [filter, setFilter] = useState<FilterType>('All');
 
   const filteredPickups = pickups.filter((p) => {
     if (filter === 'All') return true;
-    if (filter === 'Active') return p.status === 'Requested' || p.status === 'Scheduled';
-    return p.status === filter;
+    if (filter === 'Pending') return p.status === 'Requested';
+    if (filter === 'Scheduled') return p.status === 'Scheduled';
+    if (filter === 'Completed') return p.status === 'Collected';
+    if (filter === 'Cancelled') return p.status === 'Cancelled';
+    return true;
   });
 
   const counts = {
     all: pickups.length,
-    active: pickups.filter((p) => p.status === 'Requested' || p.status === 'Scheduled').length,
-    collected: pickups.filter((p) => p.status === 'Collected').length,
+    pending: pickups.filter((p) => p.status === 'Requested').length,
+    scheduled: pickups.filter((p) => p.status === 'Scheduled').length,
+    completed: pickups.filter((p) => p.status === 'Collected').length,
     cancelled: pickups.filter((p) => p.status === 'Cancelled').length,
   };
 
+  const filterTabs: { id: FilterType; label: string; count: number }[] = [
+    { id: 'All', label: 'All Requests', count: counts.all },
+    { id: 'Pending', label: 'Pending', count: counts.pending },
+    { id: 'Scheduled', label: 'Scheduled', count: counts.scheduled },
+    { id: 'Completed', label: 'Completed', count: counts.completed },
+    { id: 'Cancelled', label: 'Cancelled', count: counts.cancelled },
+  ];
+
   return (
     <div className="space-y-4">
-      {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-slate-200">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-          <span className="text-xs font-semibold text-slate-400 flex items-center gap-1 pl-2 pr-1">
+      {/* Filter Tabs Header */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3 rounded-lg border border-[#E2E9E3]">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-xs font-semibold text-[#65736B] flex items-center gap-1.5 pl-1 pr-2">
             <Filter className="w-3.5 h-3.5" />
-            Filter:
+            <span>Filter Status:</span>
           </span>
 
-          <button
-            onClick={() => setFilter('All')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              filter === 'All'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            All ({counts.all})
-          </button>
-
-          <button
-            onClick={() => setFilter('Active')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              filter === 'Active'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Active ({counts.active})
-          </button>
-
-          <button
-            onClick={() => setFilter('Collected')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              filter === 'Collected'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Collected ({counts.collected})
-          </button>
-
-          <button
-            onClick={() => setFilter('Cancelled')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-              filter === 'Cancelled'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-100'
-            }`}
-          >
-            Cancelled ({counts.cancelled})
-          </button>
+          {filterTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setFilter(tab.id)}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                filter === tab.id
+                  ? 'bg-[#063D2E] text-white'
+                  : 'bg-[#F8FAF7] text-[#17231E] hover:bg-[#E2E9E3]/70 border border-[#E2E9E3]'
+              }`}
+            >
+              {tab.label} ({tab.count})
+            </button>
+          ))}
         </div>
 
         {onOpenSchedule && (
           <button
             onClick={onOpenSchedule}
-            className="flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-xl shadow-sm transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#063D2E] hover:bg-[#042E24] px-3.5 py-1.5 rounded-md transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>New Pickup</span>
+            <span>New Demo Request</span>
           </button>
         )}
       </div>
 
-      {/* List */}
+      {/* Requests Grid */}
       {filteredPickups.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center flex flex-col items-center justify-center">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
+        <div className="bg-white rounded-lg border border-[#E2E9E3] p-12 text-center flex flex-col items-center justify-center">
+          <div className="w-12 h-12 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] text-[#063D2E] flex items-center justify-center mb-3">
             <PackageOpen className="w-6 h-6" />
           </div>
-          <h4 className="font-bold text-slate-800 text-base">No Pickups Found</h4>
-          <p className="text-xs text-slate-500 max-w-sm mt-1">
+          <h4 className="font-bold text-[#17231E] text-base">No Requests Found</h4>
+          <p className="text-xs text-[#65736B] max-w-sm mt-1">
             {filter === 'All'
-              ? 'You have not scheduled any waste pickups yet. Schedule one to start earning GreenPoints!'
-              : `No pickups matching the status "${filter}".`}
+              ? 'No waste pickup requests recorded yet. Submit a demo request above to simulate collection and GreenPoints.'
+              : `No requests currently matching the status "${filter}".`}
           </p>
           {onOpenSchedule && (
             <button
               onClick={onOpenSchedule}
-              className="mt-4 px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-sm cursor-pointer"
+              className="mt-4 px-4 py-2 rounded-md bg-[#063D2E] text-white text-xs font-semibold hover:bg-[#042E24] transition-colors cursor-pointer"
             >
-              Schedule Your First Pickup
+              Submit Demo Request
             </button>
           )}
         </div>

@@ -5,7 +5,7 @@ import { useEarthSync } from '@/context/EarthSyncContext';
 import { WasteCategorySelector } from './WasteCategorySelector';
 import { WasteCategoryId, TimeSlot } from '@/types';
 import { WASTE_CATEGORIES } from '@/data/constants';
-import { Calendar, Clock, MapPin, Sparkles, Scale, AlertCircle, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, Sparkles, Scale, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface Props {
   onSuccess?: () => void;
@@ -14,7 +14,7 @@ interface Props {
 export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
   const { addPickup } = useEarthSync();
 
-  const [category, setCategory] = useState<WasteCategoryId>('plastic');
+  const [category, setCategory] = useState<WasteCategoryId>('paper');
   const [quantityKg, setQuantityKg] = useState<number>(5);
   const [address, setAddress] = useState<string>('Campus Science Block C, Ground Floor Reception');
   const [preferredDate, setPreferredDate] = useState<string>('');
@@ -51,12 +51,17 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
     setError(null);
 
     if (!quantityKg || quantityKg <= 0) {
-      setError('Please specify a valid weight greater than 0 kg.');
+      setError('Please specify a valid quantity greater than 0 kg.');
       return;
     }
 
     if (!address.trim() || address.trim().length < 5) {
       setError('Please provide a complete pickup address (at least 5 characters).');
+      return;
+    }
+
+    if (!preferredDate) {
+      setError('Please select a preferred pickup date.');
       return;
     }
 
@@ -74,7 +79,7 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
     setIsSubmitting(false);
 
     if (!res.success) {
-      setError(res.error || 'Failed to schedule pickup');
+      setError(res.error || 'Failed to submit demo request.');
     } else {
       setNotes('');
       if (onSuccess) onSuccess();
@@ -84,7 +89,7 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="flex items-center gap-2 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+        <div className="flex items-center gap-2 p-3.5 rounded-md bg-rose-50 border border-rose-200 text-rose-800 text-xs">
           <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
           <span>{error}</span>
         </div>
@@ -92,20 +97,20 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
 
       {/* Step 1: Waste Category */}
       <div>
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-          1. Select Waste Category <span className="text-rose-500">*</span>
+        <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-2">
+          Waste Category <span className="text-rose-500">*</span>
         </label>
         <WasteCategorySelector selectedId={category} onSelect={(id) => setCategory(id)} />
       </div>
 
-      {/* Step 2: Weight & Live Estimate */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Step 2: Estimated Quantity */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-            2. Estimated Quantity (kg) <span className="text-rose-500">*</span>
+          <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-2">
+            Estimated Quantity (kg) <span className="text-rose-500">*</span>
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#65736B]">
               <Scale className="w-4 h-4" />
             </div>
             <input
@@ -115,27 +120,27 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
               max="500"
               value={quantityKg}
               onChange={(e) => setQuantityKg(parseFloat(e.target.value) || 0)}
-              className="w-full pl-10 pr-12 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-semibold text-slate-800"
+              className="w-full pl-10 pr-12 py-2.5 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-semibold text-[#17231E] bg-white"
               placeholder="e.g. 5"
               required
             />
-            <span className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-xs font-medium text-slate-400">
+            <span className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-xs font-medium text-[#65736B]">
               KG
             </span>
           </div>
 
-          {/* Quick chips */}
+          {/* Quick preset buttons */}
           <div className="flex items-center gap-1.5 mt-2">
-            <span className="text-[11px] text-slate-500">Quick set:</span>
-            {[2, 5, 10, 25, 50].map((kg) => (
+            <span className="text-[11px] text-[#65736B]">Quick select:</span>
+            {[2, 5, 10, 20, 50].map((kg) => (
               <button
                 key={kg}
                 type="button"
                 onClick={() => setQuantityKg(kg)}
-                className={`text-[11px] px-2 py-0.5 rounded-md border transition-colors ${
+                className={`text-[11px] px-2 py-0.5 rounded-md border transition-colors cursor-pointer ${
                   quantityKg === kg
-                    ? 'bg-emerald-600 text-white border-emerald-600'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                    ? 'bg-[#063D2E] text-white border-[#063D2E]'
+                    : 'bg-[#F8FAF7] hover:bg-white text-[#17231E] border-[#E2E9E3]'
                 }`}
               >
                 {kg}kg
@@ -145,58 +150,56 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
         </div>
 
         {/* Live Reward Preview Banner */}
-        <div className="rounded-xl p-3.5 bg-gradient-to-br from-emerald-900 to-forest-900 text-white flex flex-col justify-between shadow-sm border border-emerald-800">
-          <div className="flex items-center justify-between text-xs text-emerald-300">
-            <span className="flex items-center gap-1 font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              GreenPoints Incentive
+        <div className="rounded-md p-4 bg-[#F8FAF7] border border-[#E2E9E3] text-[#17231E] flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs">
+            <span className="flex items-center gap-1 font-semibold text-[#063D2E]">
+              <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+              Estimated Reward
             </span>
-            <span className="text-[10px] bg-emerald-800/80 px-2 py-0.5 rounded text-emerald-200">
-              On Verified Collection
+            <span className="text-[10px] bg-white border border-[#E2E9E3] px-2 py-0.5 rounded text-[#65736B]">
+              Credited on Completed Pickup
             </span>
           </div>
           <div className="my-2 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-amber-300 tracking-tight">
+            <span className="text-2xl font-bold text-[#063D2E] tracking-tight">
               +{potentialPoints}
             </span>
-            <span className="text-xs text-emerald-200">GreenPoints</span>
+            <span className="text-xs text-[#65736B] font-medium">GreenPoints</span>
           </div>
-          <p className="text-[11px] text-emerald-300/80 leading-snug">
-            Prevents ~{potentialCo2} kg of CO₂e emissions from landfill methane.
+          <p className="text-[11px] text-[#65736B] leading-snug">
+            Recovers recyclable material and prevents ~{potentialCo2} kg of landfill emissions.
           </p>
         </div>
       </div>
 
-      {/* Step 3: Location */}
+      {/* Step 3: Pickup Address */}
       <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-            3. Pickup Address / Campus Location <span className="text-rose-500">*</span>
-          </label>
-        </div>
+        <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+          Pickup Address <span className="text-rose-500">*</span>
+        </label>
         <div className="relative">
-          <div className="absolute top-3 left-3 text-slate-400">
+          <div className="absolute top-3 left-3 text-[#65736B]">
             <MapPin className="w-4 h-4" />
           </div>
           <textarea
             rows={2}
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
+            className="w-full pl-9 pr-3 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
             placeholder="Room number, building, floor or street address"
             required
           />
         </div>
 
-        {/* Presets */}
+        {/* Address Presets */}
         <div className="flex flex-wrap gap-1.5 mt-2">
-          <span className="text-[11px] text-slate-500 self-center">Presets:</span>
+          <span className="text-[11px] text-[#65736B] self-center">Presets:</span>
           {addressPresets.map((preset, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => setAddress(preset)}
-              className="text-[11px] px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200 text-slate-600 transition-colors truncate max-w-xs text-left"
+              className="text-[11px] px-2 py-1 rounded-md bg-[#F8FAF7] hover:bg-white hover:text-[#063D2E] border border-[#E2E9E3] text-[#65736B] transition-colors truncate max-w-xs text-left cursor-pointer"
             >
               {preset.split(',')[0]}
             </button>
@@ -204,14 +207,14 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
         </div>
       </div>
 
-      {/* Step 4: Schedule Date & Slot */}
+      {/* Step 4: Preferred Date & Time Slot */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-            4. Preferred Pickup Date <span className="text-rose-500">*</span>
+          <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+            Preferred Date <span className="text-rose-500">*</span>
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#65736B]">
               <Calendar className="w-4 h-4" />
             </div>
             <input
@@ -219,24 +222,24 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
               min={minDate}
               value={preferredDate}
               onChange={(e) => setPreferredDate(e.target.value)}
-              className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-medium text-slate-800"
+              className="w-full pl-9 pr-3 py-2.5 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white"
               required
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-            5. Time Slot <span className="text-rose-500">*</span>
+          <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+            Preferred Time Slot <span className="text-rose-500">*</span>
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#65736B]">
               <Clock className="w-4 h-4" />
             </div>
             <select
               value={timeSlot}
               onChange={(e) => setTimeSlot(e.target.value as TimeSlot)}
-              className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-medium text-slate-800 bg-white"
+              className="w-full pl-9 pr-3 py-2.5 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white cursor-pointer"
             >
               <option value="Morning (08:00 - 11:00)">Morning (08:00 - 11:00)</option>
               <option value="Afternoon (12:00 - 15:00)">Afternoon (12:00 - 15:00)</option>
@@ -246,17 +249,17 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
         </div>
       </div>
 
-      {/* Step 5: Notes */}
+      {/* Step 5: Optional Notes */}
       <div>
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-          Special Pickup Instructions (Optional)
+        <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+          Optional Notes
         </label>
         <input
           type="text"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="e.g. Leave with security guard, call upon arrival, items bagged in blue sack"
-          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
+          placeholder="e.g. Leave with reception, call on arrival, segregated in marked boxes"
+          className="w-full px-3.5 py-2.5 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
         />
       </div>
 
@@ -265,13 +268,13 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm tracking-wide shadow-lg shadow-emerald-700/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+          className="w-full py-3 px-6 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-semibold text-sm tracking-wide transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
         >
-          <CheckCircle className="w-4 h-4" />
-          <span>Confirm & Schedule Clean Pickup</span>
+          <CheckCircle2 className="w-4 h-4" />
+          <span>Submit Demo Request</span>
         </button>
-        <p className="text-center text-[11px] text-slate-400 mt-2">
-          Your request will be recorded locally and assigned to an authorized EarthSync logistics partner.
+        <p className="text-center text-[11px] text-[#65736B] mt-2">
+          Demo request will be stored locally. This is an academic simulation; no municipal pickup is booked.
         </p>
       </div>
     </form>

@@ -3,7 +3,7 @@
 import React from 'react';
 import { WASTE_CATEGORIES } from '@/data/constants';
 import { WasteCategoryId } from '@/types';
-import { Package, FileText, Shield, Wine, Cpu, Leaf, Sparkles } from 'lucide-react';
+import { Package, FileText, Shield, Wine, Cpu, Leaf, Sparkles, Box } from 'lucide-react';
 
 interface Props {
   selectedId: WasteCategoryId | null;
@@ -13,18 +13,22 @@ interface Props {
 export const WasteCategorySelector: React.FC<Props> = ({ selectedId, onSelect }) => {
   const getIcon = (id: WasteCategoryId) => {
     switch (id) {
-      case 'plastic':
-        return <Package className="w-5 h-5 text-emerald-600" />;
       case 'paper':
-        return <FileText className="w-5 h-5 text-amber-600" />;
+        return <FileText className="w-5 h-5 text-[#063D2E]" />;
+      case 'cardboard':
+        return <Box className="w-5 h-5 text-[#063D2E]" />;
+      case 'plastic':
+        return <Package className="w-5 h-5 text-[#063D2E]" />;
       case 'metal':
-        return <Shield className="w-5 h-5 text-slate-600" />;
-      case 'glass':
-        return <Wine className="w-5 h-5 text-teal-600" />;
+        return <Shield className="w-5 h-5 text-[#063D2E]" />;
       case 'ewaste':
-        return <Cpu className="w-5 h-5 text-indigo-600" />;
+        return <Cpu className="w-5 h-5 text-[#063D2E]" />;
+      case 'glass':
+        return <Wine className="w-5 h-5 text-[#063D2E]" />;
       case 'organic':
-        return <Leaf className="w-5 h-5 text-green-600" />;
+        return <Leaf className="w-5 h-5 text-[#063D2E]" />;
+      default:
+        return <Package className="w-5 h-5 text-[#063D2E]" />;
     }
   };
 
@@ -38,35 +42,35 @@ export const WasteCategorySelector: React.FC<Props> = ({ selectedId, onSelect })
             key={cat.id}
             type="button"
             onClick={() => onSelect(cat.id)}
-            className={`group relative text-left p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between ${
+            className={`group relative text-left p-3.5 rounded-lg border transition-all duration-150 cursor-pointer flex flex-col justify-between ${
               isSelected
-                ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-500/30 shadow-sm'
-                : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/70'
+                ? 'bg-[#00B884]/10 border-[#063D2E] ring-1 ring-[#063D2E]'
+                : 'bg-white border-[#E2E9E3] hover:border-[#65736B]/40 hover:bg-[#F8FAF7]'
             }`}
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div
-                  className={`p-2 rounded-lg transition-transform group-hover:scale-105 ${
-                    isSelected ? 'bg-emerald-100' : 'bg-slate-100'
+                  className={`p-2 rounded-md ${
+                    isSelected ? 'bg-white text-[#063D2E]' : 'bg-[#F8FAF7] text-[#17231E]'
                   }`}
                 >
                   {getIcon(cat.id)}
                 </div>
-                <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-300/40">
-                  <Sparkles className="w-3 h-3 text-amber-500" />
-                  {cat.pointsPerKg} pts/kg
+                <span className="flex items-center gap-1 text-[11px] font-semibold text-[#063D2E] bg-white px-2 py-0.5 rounded border border-[#E2E9E3]">
+                  <Sparkles className="w-3 h-3 text-[#FFB800]" />
+                  +{cat.pointsPerKg} pts/kg
                 </span>
               </div>
-              <h4 className="font-semibold text-sm text-slate-800 leading-tight">{cat.name}</h4>
-              <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+              <h4 className="font-semibold text-sm text-[#17231E] leading-tight">{cat.name}</h4>
+              <p className="text-[11px] text-[#65736B] mt-1 line-clamp-2 leading-relaxed">
                 {cat.description}
               </p>
             </div>
 
-            <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+            <div className="mt-2.5 pt-2 border-t border-[#E2E9E3] flex items-center justify-between text-[10px] text-[#65736B]">
               <span className="truncate">e.g. {cat.examples.split(',')[0]}</span>
-              <span className="font-semibold text-emerald-700">~{cat.co2SavedPerKg}kg CO₂e</span>
+              <span className="font-medium text-[#063D2E]">~{cat.co2SavedPerKg}kg CO₂e</span>
             </div>
           </button>
         );

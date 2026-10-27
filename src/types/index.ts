@@ -1,9 +1,10 @@
 export type WasteCategoryId = 
+  | 'paper'
+  | 'cardboard'
   | 'plastic' 
-  | 'paper' 
   | 'metal' 
+  | 'ewaste'
   | 'glass' 
-  | 'ewaste' 
   | 'organic';
 
 export interface WasteCategoryInfo {
@@ -52,6 +53,7 @@ export interface SolarEstimate {
   availableRoofAreaSqFt: number;
   locationState: string;
   monthlyConsumptionKwh: number;
+  monthlyGenerationKwh: number;
   suggestedCapacityKw: number;
   rooftopAreaRequiredSqFt: number;
   areaSufficient: boolean;

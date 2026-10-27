@@ -10,11 +10,12 @@ import {
   IndianRupee, 
   Maximize2, 
   TrendingUp, 
-  TreePine, 
-  ShieldAlert, 
-  ChevronRight, 
-  Sparkles,
-  HelpCircle
+  Info,
+  Calendar,
+  HelpCircle,
+  Clock,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 interface Props {
@@ -50,36 +51,38 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
 
   return (
     <div className="space-y-6">
-      {/* Disclaimer Banner */}
-      <div className="flex items-start gap-3 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/90 text-amber-900 text-xs">
-        <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+      {/* Disclaimer Notice */}
+      <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#E2E9E3] text-xs text-[#65736B]">
+        <Info className="w-4 h-4 text-[#063D2E] shrink-0 mt-0.5" />
         <div className="leading-relaxed">
-          <span className="font-bold">Estimates & Modeling Notice: </span>
-          The figures generated below are computational estimations for preliminary feasibility planning based on regional solar irradiance. 
-          <span className="font-semibold"> We do not claim live government subsidy eligibility or guaranteed installer availability.</span>
+          <strong className="text-[#17231E]">Transparent Estimation Notice: </strong>
+          The metrics displayed below are theoretical models for academic and preliminary feasibility exploration based on regional solar irradiance. 
+          <span className="text-[#17231E]"> Figures are estimates and do not represent binding installation quotes, installer contracts, or guaranteed government subsidies.</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Input Controls (Left: 5 cols) */}
-        <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div>
-              <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-                <Sun className="w-5 h-5 text-amber-500" />
-                Solar Feasibility Inputs
-              </h3>
-              <p className="text-xs text-slate-500">Tune parameters for your home, campus, or facility.</p>
-            </div>
+      {/* Main Two-Column Layout on Desktop, Stacked on Mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* Left Side: Input Form (5 cols on lg) */}
+        <div className="lg:col-span-5 bg-white rounded-lg border border-[#E2E9E3] p-6 space-y-6">
+          <div className="pb-4 border-b border-[#E2E9E3]">
+            <h3 className="font-bold text-[#17231E] text-base flex items-center gap-2">
+              <Sun className="w-4 h-4 text-[#FFB800]" />
+              <span>Solar Calculator Inputs</span>
+            </h3>
+            <p className="text-xs text-[#65736B] mt-0.5">
+              Adjust your electricity parameters to calculate rooftop solar feasibility.
+            </p>
           </div>
 
-          {/* Monthly Bill */}
+          {/* 1. Monthly Electricity Bill */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label htmlFor={billInputId} className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Average Monthly Electricity Bill (₹)
+              <label htmlFor={billInputId} className="text-xs font-bold text-[#17231E] uppercase tracking-wider">
+                Monthly Electricity Bill (INR)
               </label>
-              <span className="text-sm font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-100">
+              <span className="text-sm font-bold text-[#063D2E] bg-[#00B884]/10 px-2 py-0.5 rounded border border-[#00B884]/20">
                 ₹{input.monthlyBill.toLocaleString('en-IN')}
               </span>
             </div>
@@ -91,23 +94,41 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
               step="200"
               value={input.monthlyBill}
               onChange={(e) => setInput({ ...input, monthlyBill: Number(e.target.value) })}
-              className="w-full accent-emerald-600 cursor-pointer"
+              className="w-full accent-[#063D2E] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-              <span>₹800/mo (Small apt)</span>
-              <span>₹15,000/mo (Campus lab)</span>
-              <span>₹40,000/mo (Hostel/Office)</span>
+            <div className="flex justify-between text-[10px] text-[#65736B] mt-1">
+              <span>₹800/mo</span>
+              <span>₹20,000/mo</span>
+              <span>₹40,000/mo</span>
+            </div>
+
+            {/* Quick amount chips */}
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              {[2500, 4500, 8000, 15000].map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => setInput({ ...input, monthlyBill: amt })}
+                  className={`text-[11px] px-2.5 py-1 rounded-md border transition-colors cursor-pointer ${
+                    input.monthlyBill === amt
+                      ? 'bg-[#063D2E] text-white border-[#063D2E]'
+                      : 'bg-[#F8FAF7] hover:bg-white text-[#17231E] border-[#E2E9E3]'
+                  }`}
+                >
+                  ₹{amt.toLocaleString('en-IN')}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Electricity Tariff */}
+          {/* 2. Electricity Tariff per kWh */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label htmlFor={tariffInputId} className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Electricity Tariff (₹ per kWh / unit)
+              <label htmlFor={tariffInputId} className="text-xs font-bold text-[#17231E] uppercase tracking-wider">
+                Electricity Tariff (INR per kWh)
               </label>
-              <span className="text-sm font-bold text-slate-800">
-                ₹{input.electricityTariff.toFixed(1)} / unit
+              <span className="text-sm font-bold text-[#17231E]">
+                ₹{input.electricityTariff.toFixed(1)} / kWh
               </span>
             </div>
             <input
@@ -118,21 +139,21 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
               max="20"
               value={input.electricityTariff}
               onChange={(e) => setInput({ ...input, electricityTariff: parseFloat(e.target.value) || 7 })}
-              className="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-semibold text-slate-800"
+              className="w-full px-3.5 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white"
             />
-            <p className="text-[11px] text-slate-400 mt-1">
-              Derived average consumption: <span className="font-bold text-slate-700">{estimate.monthlyConsumptionKwh} units/month</span>
+            <p className="text-[11px] text-[#65736B] mt-1">
+              Derived monthly consumption: <strong className="text-[#17231E]">{estimate.monthlyConsumptionKwh} kWh / month</strong>
             </p>
           </div>
 
-          {/* Rooftop Area */}
+          {/* 3. Available Rooftop Area (sq ft) */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label htmlFor={areaInputId} className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Available Shadow-Free Rooftop Area (sq ft)
+              <label htmlFor={areaInputId} className="text-xs font-bold text-[#17231E] uppercase tracking-wider">
+                Available Rooftop Area (sq ft)
               </label>
-              <span className="text-sm font-extrabold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-lg border border-amber-100">
-                {input.availableRoofAreaSqFt} sq ft
+              <span className="text-sm font-bold text-[#063D2E] bg-[#F8FAF7] px-2 py-0.5 rounded border border-[#E2E9E3]">
+                {input.availableRoofAreaSqFt.toLocaleString('en-IN')} sq ft
               </span>
             </div>
             <input
@@ -143,25 +164,25 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
               step="50"
               value={input.availableRoofAreaSqFt}
               onChange={(e) => setInput({ ...input, availableRoofAreaSqFt: Number(e.target.value) })}
-              className="w-full accent-amber-500 cursor-pointer"
+              className="w-full accent-[#063D2E] cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+            <div className="flex justify-between text-[10px] text-[#65736B] mt-1">
               <span>100 sq ft</span>
-              <span>1,500 sq ft</span>
+              <span>2,500 sq ft</span>
               <span>5,000 sq ft</span>
             </div>
           </div>
 
-          {/* Location State */}
+          {/* 4. Location or City */}
           <div>
-            <label htmlFor={stateSelectId} className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Property Location / State
+            <label htmlFor={stateSelectId} className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+              Location / State
             </label>
             <select
               id={stateSelectId}
               value={input.locationState}
               onChange={(e) => handleStateChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-medium text-slate-800 bg-white"
+              className="w-full px-3.5 py-2.5 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white cursor-pointer"
             >
               {SOLAR_REGIONS.map((r) => (
                 <option key={r.state} value={r.state}>
@@ -171,166 +192,195 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
             </select>
           </div>
 
-          {/* Assumptions Toggle Button */}
-          <button
-            type="button"
-            onClick={() => setShowAssumptions(!showAssumptions)}
-            className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 border border-slate-200 transition-colors cursor-pointer"
-          >
-            <span className="flex items-center gap-1.5 font-semibold">
-              <HelpCircle className="w-4 h-4 text-slate-500" />
-              View Mathematical Assumptions & Model
-            </span>
-            <span className="text-[10px] text-slate-400">{showAssumptions ? 'Hide' : 'Expand'}</span>
-          </button>
+          {/* Calculation Assumptions Toggle */}
+          <div className="pt-2 border-t border-[#E2E9E3]">
+            <button
+              type="button"
+              onClick={() => setShowAssumptions(!showAssumptions)}
+              className="w-full flex items-center justify-between p-2.5 rounded-md bg-[#F8FAF7] hover:bg-[#E2E9E3]/50 text-xs text-[#17231E] border border-[#E2E9E3] transition-colors cursor-pointer"
+            >
+              <span className="flex items-center gap-1.5 font-medium">
+                <HelpCircle className="w-3.5 h-3.5 text-[#65736B]" />
+                <span>Calculation Assumptions</span>
+              </span>
+              {showAssumptions ? (
+                <ChevronUp className="w-4 h-4 text-[#65736B]" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-[#65736B]" />
+              )}
+            </button>
 
-          {showAssumptions && (
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-2 animate-in fade-in">
-              <p>
-                • <span className="font-semibold text-slate-800">Peak Sun Hours:</span> {estimate.assumptions.peakSunHours} hrs/day based on IMD solar radiation atlas.
-              </p>
-              <p>
-                • <span className="font-semibold text-slate-800">System Performance Ratio:</span> 78% (accounts for inverter clipping, cabling resistance, thermal derating & dust accumulation).
-              </p>
-              <p>
-                • <span className="font-semibold text-slate-800">Rooftop Area Footprint:</span> 90 sq.ft required per 1 kWp panel capacity.
-              </p>
-              <p>
-                • <span className="font-semibold text-slate-800">Benchmarked Capex:</span> ₹54,000 / kWp turnkey installation.
-              </p>
-              <p>
-                • <span className="font-semibold text-slate-800">Tariff Escalation:</span> 3.5% compound annual tariff growth with 0.7% panel degradation over 25 years.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Results Panel (Right: 7 cols) */}
-        <div className="lg:col-span-7 space-y-5">
-          {/* Main Solar Sizing Card */}
-          <div className="bg-stone-900 text-white rounded-xl p-6 shadow-xs border border-stone-800 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-              <Sun className="w-56 h-56 text-amber-300" />
-            </div>
-
-            <div className="relative z-10">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Optimal Solar Capacity
-                </span>
-                <span className="text-xs text-emerald-300">
-                  Region: {input.locationState}
-                </span>
-              </div>
-
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-                  {estimate.suggestedCapacityKw}
-                </span>
-                <span className="text-xl font-bold text-amber-400">kWp</span>
-                <span className="text-xs text-emerald-300 ml-2">
-                  (~{estimate.monthlyConsumptionKwh} units/month offset)
-                </span>
-              </div>
-
-              {/* Rooftop Space Check */}
-              <div className="mt-4 pt-4 border-t border-emerald-800/60 flex items-center gap-2">
-                <Maximize2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="text-xs text-emerald-200">
-                  Rooftop area required: <strong className="text-white">{estimate.rooftopAreaRequiredSqFt} sq ft</strong>.
-                  Available: <strong className="text-white">{input.availableRoofAreaSqFt} sq ft</strong>.
-                </span>
-                {estimate.areaSufficient ? (
-                  <span className="text-[11px] font-bold text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded border border-emerald-700 ml-auto shrink-0">
-                    ✓ Space Sufficient
-                  </span>
-                ) : (
-                  <span className="text-[11px] font-bold text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-600 ml-auto shrink-0">
-                    ⚠ Space Constrained
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Key Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {/* Capex */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-1">
-                <IndianRupee className="w-3.5 h-3.5 text-slate-400" />
-                <span>Approx. Cost</span>
-              </div>
-              <div className="text-lg font-extrabold text-slate-900 tracking-tight">
-                ₹{estimate.approximateCostInr.toLocaleString('en-IN')}
-              </div>
-              <span className="text-[10px] text-slate-400">Turnkey benchmark</span>
-            </div>
-
-            {/* Monthly Savings */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-1">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Monthly Savings</span>
-              </div>
-              <div className="text-lg font-extrabold text-emerald-700 tracking-tight">
-                ₹{estimate.monthlySavingsInr.toLocaleString('en-IN')}
-              </div>
-              <span className="text-[10px] text-emerald-600">~₹{estimate.annualSavingsInr.toLocaleString('en-IN')}/yr</span>
-            </div>
-
-            {/* Payback Period */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-1">
-                <Zap className="w-3.5 h-3.5 text-amber-500" />
-                <span>Payback Period</span>
-              </div>
-              <div className="text-lg font-extrabold text-amber-700 tracking-tight">
-                {estimate.paybackPeriodYears} Yrs
-              </div>
-              <span className="text-[10px] text-slate-400">ROI break-even</span>
-            </div>
-
-            {/* Lifetime 25-yr */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-1">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-                <span>25-Yr Net Gain</span>
-              </div>
-              <div className="text-lg font-extrabold text-indigo-700 tracking-tight">
-                ₹{(estimate.lifetimeSavings25YrInr / 100000).toFixed(1)}L
-              </div>
-              <span className="text-[10px] text-slate-400">Cumulative net</span>
-            </div>
-          </div>
-
-          {/* Environmental Equivalents */}
-          <div className="bg-emerald-50/80 rounded-2xl border border-emerald-200 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-                <TreePine className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-slate-900 text-sm">Clean Energy Environmental Impact</h4>
-                <p className="text-xs text-slate-600">
-                  Offsets <strong className="text-emerald-800">~{estimate.annualCo2OffsetKg.toLocaleString('en-IN')} kg of CO₂e</strong>/year.
+            {showAssumptions && (
+              <div className="mt-2 p-3 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] text-[11px] text-[#65736B] space-y-1.5">
+                <p>
+                  • <strong>Peak Sun Hours:</strong> {estimate.assumptions.peakSunHours} hrs/day based on regional solar irradiance index.
+                </p>
+                <p>
+                  • <strong>System Performance Ratio:</strong> 78% (considers inverter efficiency, wiring losses, and temperature derating).
+                </p>
+                <p>
+                  • <strong>Area Footprint:</strong> ~90 sq ft per 1 kW capacity.
+                </p>
+                <p>
+                  • <strong>Turnkey Benchmark Cost:</strong> ~₹54,000 per kW benchmark.
+                </p>
+                <p>
+                  • <strong>Long-term Model:</strong> 3.5% annual utility tariff inflation with 0.7% annual solar panel degradation.
                 </p>
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Side: Results Panel (7 cols on lg) */}
+        <div className="lg:col-span-7 space-y-4">
+          
+          {/* Primary Recommended Solar Capacity Panel */}
+          <div className="bg-[#063D2E] text-white rounded-lg p-6 border border-[#042E24]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-semibold bg-white/10 text-white border border-white/20">
+                <Sun className="w-3.5 h-3.5 text-[#FFB800]" />
+                Estimated Feasibility Results
+              </span>
+              <span className="text-xs text-white/80">
+                Region: {input.locationState}
+              </span>
             </div>
 
-            <div className="text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-3 py-1.5 rounded-xl border border-emerald-300/40 shrink-0">
-              Equivalent to planting ~{estimate.equivalentTreesPlanted} trees/yr
+            {/* Capacity Highlight */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                {estimate.suggestedCapacityKw}
+              </span>
+              <span className="text-xl font-bold text-[#FFB800]">kW</span>
+              <span className="text-xs text-white/80">
+                Suitable Solar Capacity
+              </span>
+            </div>
+
+            {/* Rooftop Space Check */}
+            <div className="mt-5 pt-4 border-t border-white/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-white/90">
+                <Maximize2 className="w-4 h-4 text-[#00B884] shrink-0" />
+                <span>
+                  Roof area required: <strong className="text-white">{estimate.rooftopAreaRequiredSqFt} sq ft</strong> (Available: {input.availableRoofAreaSqFt} sq ft)
+                </span>
+              </div>
+              {estimate.areaSufficient ? (
+                <span className="text-[11px] font-semibold text-[#00B884] bg-white/10 px-2 py-0.5 rounded border border-[#00B884]/40 shrink-0">
+                  ✓ Roof Space Sufficient
+                </span>
+              ) : (
+                <span className="text-[11px] font-semibold text-[#FFB800] bg-white/10 px-2 py-0.5 rounded border border-[#FFB800]/40 shrink-0">
+                  ⚠ Space Constrained (Capacity Adjusted)
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Call to Action for Consultation / Enquiry */}
+          {/* Core Results Grid: 4 Prominent Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* 1. Monthly Generation in kWh */}
+            <div className="bg-white rounded-lg border border-[#E2E9E3] p-5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#65736B] mb-1">
+                <Zap className="w-3.5 h-3.5 text-[#FFB800]" />
+                <span>Estimated Monthly Generation</span>
+              </div>
+              <div className="text-2xl font-bold text-[#17231E] tracking-tight mt-1">
+                {estimate.monthlyGenerationKwh.toLocaleString('en-IN')}{' '}
+                <span className="text-sm font-normal text-[#65736B]">kWh</span>
+              </div>
+              <span className="text-[11px] text-[#65736B] mt-1 block">
+                Displaces ~{Math.round((estimate.monthlyGenerationKwh / (estimate.monthlyConsumptionKwh || 1)) * 100)}% of monthly usage
+              </span>
+            </div>
+
+            {/* 2. Monthly Savings in INR */}
+            <div className="bg-white rounded-lg border border-[#E2E9E3] p-5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#65736B] mb-1">
+                <IndianRupee className="w-3.5 h-3.5 text-[#00B884]" />
+                <span>Estimated Monthly Savings</span>
+              </div>
+              <div className="text-2xl font-bold text-[#063D2E] tracking-tight mt-1">
+                ₹{estimate.monthlySavingsInr.toLocaleString('en-IN')}
+              </div>
+              <span className="text-[11px] text-[#65736B] mt-1 block">
+                Direct reduction in utility bill
+              </span>
+            </div>
+
+            {/* 3. Annual Savings in INR */}
+            <div className="bg-white rounded-lg border border-[#E2E9E3] p-5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#65736B] mb-1">
+                <TrendingUp className="w-3.5 h-3.5 text-[#00B884]" />
+                <span>Estimated Annual Savings</span>
+              </div>
+              <div className="text-2xl font-bold text-[#063D2E] tracking-tight mt-1">
+                ₹{estimate.annualSavingsInr.toLocaleString('en-IN')}
+              </div>
+              <span className="text-[11px] text-[#65736B] mt-1 block">
+                Year 1 annualized savings
+              </span>
+            </div>
+
+            {/* 4. Approximate Payback Period in Years */}
+            <div className="bg-white rounded-lg border border-[#E2E9E3] p-5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-[#65736B] mb-1">
+                <Clock className="w-3.5 h-3.5 text-[#FFB800]" />
+                <span>Approximate Payback Period</span>
+              </div>
+              <div className="text-2xl font-bold text-[#17231E] tracking-tight mt-1">
+                {estimate.paybackPeriodYears}{' '}
+                <span className="text-sm font-normal text-[#65736B]">Years</span>
+              </div>
+              <span className="text-[11px] text-[#65736B] mt-1 block">
+                Estimated break-even against benchmark capex
+              </span>
+            </div>
+
+          </div>
+
+          {/* Benchmark Capital Outlay & Environmental Summary */}
+          <div className="bg-white rounded-lg border border-[#E2E9E3] p-5 space-y-3">
+            <h4 className="text-xs font-bold text-[#17231E] uppercase tracking-wider">
+              Installation Benchmark & Lifetime Outlook
+            </h4>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
+              <div className="p-3 rounded-md bg-[#F8FAF7] border border-[#E2E9E3]">
+                <span className="text-[#65736B] block">Benchmark Outlay:</span>
+                <span className="font-bold text-[#17231E] text-sm">
+                  ₹{estimate.approximateCostInr.toLocaleString('en-IN')}
+                </span>
+                <span className="text-[10px] text-[#65736B] block">Turnkey estimate</span>
+              </div>
+
+              <div className="p-3 rounded-md bg-[#F8FAF7] border border-[#E2E9E3]">
+                <span className="text-[#65736B] block">25-Yr Modeled Gain:</span>
+                <span className="font-bold text-[#063D2E] text-sm">
+                  ₹{(estimate.lifetimeSavings25YrInr / 100000).toFixed(1)} Lakhs
+                </span>
+                <span className="text-[10px] text-[#65736B] block">Cumulative net gain</span>
+              </div>
+
+              <div className="p-3 rounded-md bg-[#F8FAF7] border border-[#E2E9E3]">
+                <span className="text-[#65736B] block">Annual CO₂ Offset:</span>
+                <span className="font-bold text-[#17231E] text-sm">
+                  ~{estimate.annualCo2OffsetKg.toLocaleString('en-IN')} kg
+                </span>
+                <span className="text-[10px] text-[#65736B] block">Grid emissions displaced</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button to Log Demo Enquiry if supported */}
           {onOpenEnquiry && (
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="p-4 rounded-lg bg-[#F8FAF7] border border-[#E2E9E3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
-                <h4 className="font-bold text-slate-900 text-sm">Ready to explore rooftop solar?</h4>
-                <p className="text-xs text-slate-500">
-                  Submit a provider enquiry to log your technical specifications with local installers.
+                <h5 className="font-bold text-xs text-[#17231E]">Want to save this solar configuration?</h5>
+                <p className="text-[11px] text-[#65736B]">
+                  Record your modeled specifications into your local demo enquiry log.
                 </p>
               </div>
               <button
@@ -342,14 +392,15 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
                     estimate.monthlySavingsInr
                   )
                 }
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs tracking-wide shadow-md shadow-amber-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shrink-0"
               >
-                <span>Request Provider Enquiry</span>
-                <ChevronRight className="w-4 h-4" />
+                Log Demo Enquiry
               </button>
             </div>
           )}
+
         </div>
+
       </div>
     </div>
   );

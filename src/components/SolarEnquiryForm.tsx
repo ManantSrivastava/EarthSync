@@ -77,24 +77,24 @@ export const SolarEnquiryForm: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-stone-200 shadow-xl overflow-hidden max-w-2xl w-full">
+    <div className="bg-white rounded-lg border border-[#E2E9E3] shadow-lg overflow-hidden max-w-2xl w-full">
       {/* Header */}
-      <div className="bg-gradient-to-r from-forest-950 to-emerald-950 p-6 text-white flex items-start justify-between">
+      <div className="bg-[#063D2E] p-6 text-white flex items-start justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="p-1 rounded-md bg-amber-500/20 text-amber-400">
+            <span className="p-1 rounded bg-white/10 text-[#FFB800]">
               <Sun className="w-5 h-5" />
             </span>
-            <h3 className="font-bold text-lg">SolarSaathi Installer Enquiry</h3>
+            <h3 className="font-bold text-lg text-white">SolarSaathi Installer Demo Enquiry</h3>
           </div>
-          <p className="text-xs text-emerald-300">
-            Connect with pre-screened clean tech EPC providers for site inspection & quotes.
+          <p className="text-xs text-white/80">
+            Log your technical specifications into local storage for presentation review.
           </p>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white"
+            className="p-1.5 rounded-md hover:bg-white/10 text-white/70 hover:text-white cursor-pointer"
             aria-label="Close form"
           >
             <X className="w-5 h-5" />
@@ -103,17 +103,17 @@ export const SolarEnquiryForm: React.FC<Props> = ({
       </div>
 
       {/* Notice Banner */}
-      <div className="bg-amber-50 border-b border-amber-200 px-6 py-2.5 flex items-center gap-2 text-[11px] text-amber-900">
-        <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+      <div className="bg-[#F8FAF7] border-b border-[#E2E9E3] px-6 py-2.5 flex items-center gap-2 text-[11px] text-[#65736B]">
+        <ShieldAlert className="w-4 h-4 text-[#FFB800] shrink-0" />
         <span>
-          Academic demonstration prototype: Enquiries are stored locally in your browser session. No actual commercial contract is initiated.
+          Academic demonstration prototype: Enquiries are stored locally in your browser. No commercial contract is initiated.
         </span>
       </div>
 
       {/* Form Content */}
       <form onSubmit={handleSubmit} className="p-6 space-y-4">
         {error && (
-          <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-2">
+          <div className="p-3 rounded-md bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{error}</span>
           </div>
@@ -121,34 +121,34 @@ export const SolarEnquiryForm: React.FC<Props> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
               Contact Person / Organization <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <User className="w-4 h-4 text-[#65736B] absolute left-3 top-3" />
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-medium text-slate-800"
+                className="w-full pl-9 pr-3 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white"
                 placeholder="Name or College Department"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
               Phone Number <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Phone className="w-4 h-4 text-[#65736B] absolute left-3 top-3" />
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 required
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm font-medium text-slate-800"
+                className="w-full pl-9 pr-3 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm font-medium text-[#17231E] bg-white"
                 placeholder="+91 98765 43210"
               />
             </div>
@@ -157,33 +157,33 @@ export const SolarEnquiryForm: React.FC<Props> = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-[#65736B] absolute left-3 top-3" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
+                className="w-full pl-9 pr-3 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
                 placeholder="email@example.com"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
               City / State <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
-              <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <MapPin className="w-4 h-4 text-[#65736B] absolute left-3 top-3" />
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 required
-                className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
+                className="w-full pl-9 pr-3 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
                 placeholder="e.g. Pune, Maharashtra"
               />
             </div>
@@ -191,43 +191,43 @@ export const SolarEnquiryForm: React.FC<Props> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
             Installation Site Address / Campus Location
           </label>
           <input
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
+            className="w-full px-3.5 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
             placeholder="Plot / building / floor details"
           />
         </div>
 
         {/* Technical specs pre-filled from calculator */}
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div className="p-3.5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
           <div>
-            <span className="text-slate-500 block">Attached Sizing</span>
-            <span className="font-extrabold text-emerald-700 text-sm">{capacityKw} kWp System</span>
+            <span className="text-[#65736B] block">Attached Sizing</span>
+            <span className="font-bold text-[#063D2E] text-sm">{capacityKw} kWp System</span>
           </div>
           <div>
-            <span className="text-slate-500 block">Est. Turnkey Cost</span>
-            <span className="font-extrabold text-slate-800 text-sm">₹{initialEstimatedCost.toLocaleString('en-IN')}</span>
+            <span className="text-[#65736B] block">Est. Turnkey Cost</span>
+            <span className="font-bold text-[#17231E] text-sm">₹{initialEstimatedCost.toLocaleString('en-IN')}</span>
           </div>
           <div>
-            <span className="text-slate-500 block">Est. Bill Offset</span>
-            <span className="font-extrabold text-amber-600 text-sm">~₹{initialMonthlySavings.toLocaleString('en-IN')}/mo</span>
+            <span className="text-[#65736B] block">Est. Bill Offset</span>
+            <span className="font-bold text-[#063D2E] text-sm">~₹{initialMonthlySavings.toLocaleString('en-IN')}/mo</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
               System Architecture
             </label>
             <select
               value={systemType}
               onChange={(e) => setSystemType(e.target.value as SolarSystemType)}
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-800 bg-white"
+              className="w-full px-3 py-2 rounded-md border border-[#E2E9E3] text-xs font-semibold text-[#17231E] bg-white cursor-pointer"
             >
               <option value="On-Grid (Net Metered)">On-Grid (Net Metered)</option>
               <option value="Off-Grid (Battery Backup)">Off-Grid (Battery Backup)</option>
@@ -236,31 +236,31 @@ export const SolarEnquiryForm: React.FC<Props> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-              Financing & Business Model Preference
+            <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
+              Financing Preference
             </label>
             <select
               value={financingPreference}
               onChange={(e) => setFinancingPreference(e.target.value as SolarFinancingPreference)}
-              className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-800 bg-white"
+              className="w-full px-3 py-2 rounded-md border border-[#E2E9E3] text-xs font-semibold text-[#17231E] bg-white cursor-pointer"
             >
               <option value="Direct Outright Purchase">Direct Outright Purchase (CAPEX)</option>
               <option value="Solar Loan / EMI">Green Energy Loan / Low EMI</option>
-              <option value="Zero-Investment Rooftop Lease">Zero-Investment Rooftop Lease (OPEX/RESCO)</option>
+              <option value="Zero-Investment Rooftop Lease">Zero-Investment Rooftop Lease</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-bold text-[#17231E] uppercase tracking-wider mb-1.5">
             Specific Roof Details or Queries (Optional)
           </label>
           <textarea
             rows={2}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 text-sm text-slate-800"
-            placeholder="e.g. RCC flat roof with water tank, shadow on east side until 9 AM, 3-phase grid connection available"
+            className="w-full px-3.5 py-2 rounded-md border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white"
+            placeholder="e.g. RCC flat roof with water tank, shadow on east side until 9 AM, 3-phase grid connection"
           />
         </div>
 
@@ -268,10 +268,10 @@ export const SolarEnquiryForm: React.FC<Props> = ({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm tracking-wide shadow-lg shadow-emerald-700/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-2.5 px-6 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-semibold text-sm tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>Submit Solar Consultation Request</span>
+            <span>Submit Demo Enquiry</span>
           </button>
         </div>
       </form>

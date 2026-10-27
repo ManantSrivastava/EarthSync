@@ -74,6 +74,7 @@ export function calculateSolarFeasibility(input: SolarCalculationInput): SolarEs
     availableRoofAreaSqFt: availableArea,
     locationState: region.state,
     monthlyConsumptionKwh,
+    monthlyGenerationKwh,
     suggestedCapacityKw: effectiveCapacityKw,
     rooftopAreaRequiredSqFt,
     areaSufficient,
