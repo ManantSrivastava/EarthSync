@@ -23,10 +23,20 @@ export default function SolarSaathiPage() {
     capacityKw: 3.5,
     estimatedCost: 189000,
     monthlySavings: 4200,
+    locationState: 'Maharashtra',
+    monthlyBill: 4500,
+    roofAreaSqFt: 450,
   });
 
-  const handleOpenEnquiry = (capacityKw: number, estimatedCost: number, monthlySavings: number) => {
-    setModalInitialData({ capacityKw, estimatedCost, monthlySavings });
+  const handleOpenEnquiry = (details: {
+    capacityKw: number;
+    estimatedCost: number;
+    monthlySavings: number;
+    locationState: string;
+    monthlyBill: number;
+    roofAreaSqFt: number;
+  }) => {
+    setModalInitialData(details);
     setEnquiryModalOpen(true);
   };
 
@@ -61,10 +71,7 @@ export default function SolarSaathiPage() {
         {/* Action Button */}
         <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
           <button
-            onClick={() => {
-              setModalInitialData({ capacityKw: 3.5, estimatedCost: 189000, monthlySavings: 4200 });
-              setEnquiryModalOpen(true);
-            }}
+            onClick={() => setEnquiryModalOpen(true)}
             className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center gap-2 cursor-pointer"
           >
             <FileText className="w-3.5 h-3.5 text-[#FFB800]" />
@@ -113,7 +120,12 @@ export default function SolarSaathiPage() {
       </div>
 
       {/* Active Tab View */}
-      {activeTab === 'calculator' && <SolarCalculator onOpenEnquiry={handleOpenEnquiry} />}
+      {activeTab === 'calculator' && (
+        <SolarCalculator 
+          onOpenEnquiry={handleOpenEnquiry}
+          onEstimateChange={(details) => setModalInitialData(details)}
+        />
+      )}
       {activeTab === 'subsidies' && <SolarSubsidyGuide />}
       {activeTab === 'enquiries' && <SolarEnquiryList onCalculateSolar={() => setActiveTab('calculator')} />}
 
@@ -125,6 +137,9 @@ export default function SolarSaathiPage() {
               initialCapacityKw={modalInitialData.capacityKw}
               initialEstimatedCost={modalInitialData.estimatedCost}
               initialMonthlySavings={modalInitialData.monthlySavings}
+              initialLocationState={modalInitialData.locationState}
+              initialMonthlyBill={modalInitialData.monthlyBill}
+              initialRoofAreaSqFt={modalInitialData.roofAreaSqFt}
               onClose={() => setEnquiryModalOpen(false)}
               onSuccess={() => {
                 setEnquiryModalOpen(false);
