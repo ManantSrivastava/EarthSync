@@ -11,8 +11,7 @@ import {
   Calculator, 
   ShieldCheck, 
   Compass, 
-  Info,
-  FileText
+  Info
 } from 'lucide-react';
 
 export default function SolarSaathiPage() {
@@ -66,17 +65,6 @@ export default function SolarSaathiPage() {
           <p className="text-sm text-[#65736B] max-w-2xl leading-relaxed">
             Understand your rooftop&apos;s solar potential.
           </p>
-        </div>
-
-        {/* Action Button */}
-        <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
-          <button
-            onClick={() => setEnquiryModalOpen(true)}
-            className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center gap-2 cursor-pointer"
-          >
-            <FileText className="w-3.5 h-3.5 text-[#FFB800]" />
-            <span>Request Consultation</span>
-          </button>
         </div>
       </div>
 
