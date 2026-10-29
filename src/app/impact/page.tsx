@@ -1,22 +1,12 @@
 'use client';
 
 import React from 'react';
-import { useEarthSync } from '@/context/EarthSyncContext';
 import { ImpactVisualizer } from '@/components/ImpactVisualizer';
-import { DemoDataNotice } from '@/components/DemoDataNotice';
 import { Leaf } from 'lucide-react';
 
 export default function SustainabilityImpactPage() {
-  const { pickups, solarEnquiries } = useEarthSync();
-
-  const hasUserEntries =
-    pickups.some((p) => !p.isSample) || solarEnquiries.some((e) => !e.isSample);
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8 animate-in fade-in duration-300">
-      {/* Demo Notice */}
-      <DemoDataNotice hasUserEntries={hasUserEntries} />
-
       {/* Header */}
       <div className="bg-white rounded-xl border border-stone-200 p-6 sm:p-8 shadow-xs">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 mb-2">

@@ -16,7 +16,7 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
 
   const [category, setCategory] = useState<WasteCategoryId>('paper');
   const [quantityKg, setQuantityKg] = useState<number>(5);
-  const [address, setAddress] = useState<string>('Campus Science Block C, Ground Floor Reception');
+  const [address, setAddress] = useState<string>('');
   const [preferredDate, setPreferredDate] = useState<string>('');
   const [minDate, setMinDate] = useState<string>('');
   const [timeSlot, setTimeSlot] = useState<TimeSlot>('Morning (08:00 - 11:00)');
@@ -79,7 +79,7 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
     setIsSubmitting(false);
 
     if (!res.success) {
-      setError(res.error || 'Failed to submit demo request.');
+      setError(res.error || 'Failed to schedule waste pickup.');
     } else {
       setNotes('');
       if (onSuccess) onSuccess();
@@ -271,10 +271,10 @@ export const WastePickupForm: React.FC<Props> = ({ onSuccess }) => {
           className="w-full py-3 px-6 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-semibold text-sm tracking-wide transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
         >
           <CheckCircle2 className="w-4 h-4" />
-          <span>Submit Demo Request</span>
+          <span>Schedule Waste Pickup</span>
         </button>
         <p className="text-center text-[11px] text-[#65736B] mt-2">
-          Demo request will be stored locally. This is an academic simulation; no municipal pickup is booked.
+          Your segregated waste collection request will be routed to localized recycling partners.
         </p>
       </div>
     </form>

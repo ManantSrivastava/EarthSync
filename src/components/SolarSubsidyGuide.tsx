@@ -93,8 +93,8 @@ export const SolarSubsidyGuide: React.FC = () => {
       <div className="p-4 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] text-xs text-[#65736B] flex items-start gap-2.5">
         <Info className="w-4 h-4 text-[#063D2E] shrink-0 mt-0.5" />
         <div className="leading-relaxed text-[11px]">
-          <strong className="text-[#17231E]">Academic Platform Notice: </strong>
-          EarthSync is an educational demonstration prototype. It does not grant, process, or guarantee government subsidies. Subsidy disbursement is subject to state DISCOM net-metering sanctions and official guidelines published on official government portals.
+          <strong className="text-[#17231E]">Regulatory Notice: </strong>
+          Central and state subsidies are disbursed directly through DISCOM net-metering approvals under PM Surya Ghar Muft Bijli Yojana. Estimated amounts are standard benchmarks based on MNRE guidelines.
         </div>
       </div>
     </div>

@@ -8,17 +8,18 @@ import {
   Leaf, 
   Menu, 
   X, 
-  RotateCcw, 
-  Sparkles,
-  ArrowRight,
-  ShieldCheck
+  Sun,
+  Globe,
+  ChevronDown,
+  User
 } from 'lucide-react';
 
 export const Navigation: React.FC = () => {
   const pathname = usePathname();
-  const { userProfile, isHydrated, resetAllData, loadSampleData } = useEarthSync();
+  const { userProfile, isHydrated } = useEarthSync();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showDemoModal, setShowDemoModal] = useState(false);
+  const [language, setLanguage] = useState<'En' | 'Hi'>('En');
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -35,37 +36,66 @@ export const Navigation: React.FC = () => {
 
   return (
     <>
-      {/* Sticky Horizontal Navbar */}
-      <header className="sticky top-0 z-50 bg-[#F8FAF7]/95 backdrop-blur-md border-b border-[#E2E9E3] text-[#17231E]">
+      {/* Sticky Horizontal Navbar matching design */}
+      <header className="sticky top-0 z-50 bg-[#F8FAF7]/95 backdrop-blur-md text-[#17231E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
           
-          {/* Left: EarthSync Logo & Wordmark */}
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-9 h-9 rounded-md bg-[#063D2E] flex items-center justify-center text-white transition-colors group-hover:bg-[#042E24]">
-              <Leaf className="w-5 h-5 text-[#00B884]" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold tracking-tight text-lg text-[#063D2E] leading-tight">
-                Earth<span className="text-[#00B884]">Sync</span>
+          {/* Left: EarthSync Logo & Language selector */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <Link href="/" className="flex items-center gap-2 group shrink-0">
+              {/* Clean tilted green leaf icon from design */}
+              <Leaf className="w-6 h-6 text-[#00A86B] fill-[#00A86B] transition-transform group-hover:scale-105" />
+              <span className="text-xl font-bold tracking-tight text-[#063D2E]">
+                Earth<span className="text-[#00A86B]">Sync</span>
               </span>
-              <span className="text-[10px] font-medium tracking-wide text-[#65736B] uppercase">
-                CleanTech Platform
-              </span>
+            </Link>
+
+            {/* Language Selector Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium text-[#4B5563] hover:text-[#063D2E] hover:bg-black/5 transition-colors cursor-pointer"
+                title="Select Language"
+                aria-label="Select Language"
+              >
+                <Globe className="w-3.5 h-3.5 text-[#6B7280]" />
+                <span className="font-semibold text-xs">{language}</span>
+                <ChevronDown className="w-3 h-3 text-[#6B7280]" />
+              </button>
+
+              {langMenuOpen && (
+                <div className="absolute left-0 mt-1 w-28 bg-white border border-[#E2E9E3] rounded-lg shadow-md py-1 z-50 text-xs">
+                  <button
+                    onClick={() => { setLanguage('En'); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#F8FAF7] flex items-center justify-between ${language === 'En' ? 'font-bold text-[#063D2E]' : 'text-[#4B5563]'}`}
+                  >
+                    <span>English</span>
+                    {language === 'En' && <span className="text-[#00B884]">✓</span>}
+                  </button>
+                  <button
+                    onClick={() => { setLanguage('Hi'); setLangMenuOpen(false); }}
+                    className={`w-full text-left px-3 py-1.5 hover:bg-[#F8FAF7] flex items-center justify-between ${language === 'Hi' ? 'font-bold text-[#063D2E]' : 'text-[#4B5563]'}`}
+                  >
+                    <span>हिंदी</span>
+                    {language === 'Hi' && <span className="text-[#00B884]">✓</span>}
+                  </button>
+                </div>
+              )}
             </div>
-          </Link>
+          </div>
 
           {/* Navigation Links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-3.5 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-4 py-1.5 text-sm transition-all ${
                     active
-                      ? 'text-[#063D2E] bg-[#00B884]/10 font-semibold'
-                      : 'text-[#65736B] hover:text-[#063D2E] hover:bg-[#E2E9E3]/50'
+                      ? 'text-[#063D2E] bg-[#E7F6EC] font-semibold rounded-full shadow-2xs'
+                      : 'text-[#4B5563] hover:text-[#063D2E] font-medium rounded-full hover:bg-black/[0.03]'
                   }`}
                 >
                   {link.name}
@@ -74,36 +104,38 @@ export const Navigation: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action: Get Started Button & Subtle Utilities */}
-          <div className="hidden sm:flex items-center gap-3">
-            {/* Subtle Demo State Trigger for Academic Grading */}
-            <button
-              onClick={() => setShowDemoModal(true)}
-              className="px-2.5 py-1.5 rounded-md border border-[#E2E9E3] text-[#65736B] hover:text-[#17231E] hover:bg-white text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
-              title="Academic demo controls"
-            >
-              <RotateCcw className="w-3.5 h-3.5 text-[#65736B]" />
-              <span className="hidden lg:inline text-[11px]">Demo Data</span>
-            </button>
-
+          {/* Right Action: Points Pill, Profile / Sign In, Get Started Button */}
+          <div className="hidden sm:flex items-center gap-2.5 lg:gap-3">
             {/* GreenPoints Indicator */}
             <Link
               href="/waste"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-[#E2E9E3] text-xs font-semibold text-[#063D2E] hover:border-[#00B884] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 hover:bg-white border border-[#E2E8F0] text-xs font-semibold text-[#1F2937] hover:border-[#CBD5E1] shadow-2xs transition-all"
               title="GreenPoints Balance"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
-              <span>{isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '...'} pts</span>
+              <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
+              <span className="text-[12px]">{isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '0'} pts</span>
             </Link>
 
-            {/* Rectangular "Get Started" Button */}
-            <Link
-              href="/waste"
-              className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center gap-1.5"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            {/* Profile or Sign In Link */}
+            {isHydrated && userProfile.email ? (
+              <Link
+                href="/profile"
+                className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
+                title="Account Profile"
+              >
+                <User className="w-3.5 h-3.5 text-[#00A86B]" />
+                <span className="text-[12px]">{userProfile.name ? userProfile.name.split(' ')[0] : 'Profile'}</span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
+                title="Sign In"
+              >
+                <User className="w-3.5 h-3.5 text-[#6B7280]" />
+                <span className="text-[12px]">Sign In</span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Right: Points & Hamburger Button */}
@@ -112,7 +144,7 @@ export const Navigation: React.FC = () => {
               href="/waste"
               className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E2E9E3] text-xs font-semibold text-[#063D2E]"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
+              <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
               <span>{isHydrated ? userProfile.greenPointsBalance : '0'}</span>
             </Link>
 
@@ -139,7 +171,7 @@ export const Navigation: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                       active
-                        ? 'text-[#063D2E] bg-[#00B884]/15 font-bold'
+                        ? 'text-[#063D2E] bg-[#E7F6EC] font-bold'
                         : 'text-[#17231E] hover:bg-white'
                     }`}
                   >
@@ -150,84 +182,29 @@ export const Navigation: React.FC = () => {
             </nav>
 
             <div className="mt-4 pt-4 border-t border-[#E2E9E3] flex flex-col gap-2.5">
-              <Link
-                href="/waste"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 px-4 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide"
-              >
-                Get Started
-              </Link>
-
-              <button
-                onClick={() => {
-                  setShowDemoModal(true);
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-center py-2 px-3 rounded-md border border-[#E2E9E3] text-xs font-medium text-[#65736B] hover:bg-white flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <RotateCcw className="w-3.5 h-3.5 text-[#65736B]" />
-                <span>Presentation Demo Controls</span>
-              </button>
+              {isHydrated && userProfile.email ? (
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full text-center py-2 px-3 rounded-md border border-[#E2E9E3] text-xs font-medium text-[#17231E] hover:bg-white flex items-center justify-center gap-1.5"
+                >
+                  <User className="w-3.5 h-3.5 text-[#00A86B]" />
+                  <span>My Profile</span>
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full text-center py-2 px-3 rounded-md border border-[#E2E9E3] text-xs font-medium text-[#17231E] hover:bg-white flex items-center justify-center gap-1.5"
+                >
+                  <User className="w-3.5 h-3.5 text-[#6B7280]" />
+                  <span>Sign In / Register</span>
+                </Link>
+              )}
             </div>
           </div>
         )}
       </header>
-
-      {/* Demo Presentation Modal */}
-      {showDemoModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-lg border border-[#E2E9E3] text-[#17231E]">
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#00B884]/10 text-[#063D2E] border border-[#00B884]/30 text-[11px] font-semibold mb-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#00B884]" />
-                  <span>Academic Prototype</span>
-                </div>
-                <h3 className="text-base font-bold text-[#17231E]">Demo Presentation Controls</h3>
-                <p className="text-xs text-[#65736B] mt-1">
-                  Manage mock data state for evaluation and presentation.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowDemoModal(false)}
-                className="p-1.5 rounded-md hover:bg-[#F8FAF7] text-[#65736B] hover:text-[#17231E] cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="mt-5 space-y-3">
-              <div className="p-3.5 rounded-lg bg-[#F8FAF7] border border-[#E2E9E3] text-xs text-[#65736B] leading-relaxed">
-                <span className="font-semibold text-[#17231E] block mb-1">Notice:</span>
-                Sample records are labeled with a <span className="bg-[#E2E9E3] text-[#17231E] font-bold px-1.5 py-0.5 rounded text-[10px]">SAMPLE</span> tag. New requests and enquiries are stored in your browser&apos;s LocalStorage.
-              </div>
-
-              <div className="flex flex-col gap-2 pt-2">
-                <button
-                  onClick={() => {
-                    loadSampleData();
-                    setShowDemoModal(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs transition-colors cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>Reload Baseline Sample Data</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    resetAllData();
-                    setShowDemoModal(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-md bg-[#F8FAF7] hover:bg-rose-50 hover:text-rose-700 text-[#65736B] font-medium text-xs transition-colors border border-[#E2E9E3] cursor-pointer"
-                >
-                  <span>Clear All Stored Data</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

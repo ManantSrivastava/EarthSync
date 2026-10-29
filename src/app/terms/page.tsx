@@ -31,7 +31,7 @@ export default function TermsPage() {
           Terms of Service
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
-          Effective date: October 2026. Please read these terms governing your use of the EarthSync platform prototype and demonstration services.
+          Effective date: October 2026. Please read these terms governing your use of the EarthSync platform and clean energy services.
         </p>
       </div>
 
@@ -41,11 +41,10 @@ export default function TermsPage() {
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div className="text-xs sm:text-sm space-y-1">
             <span className="font-bold text-amber-950 uppercase tracking-wider text-xs block">
-              Academic and Pre-Seed Prototype Disclosures
+              Platform & Regulatory Disclosures
             </span>
             <p className="text-amber-800 leading-relaxed">
-              EarthSync is presented as an academic business management project and functional technology prototype. 
-              The calculations, sample entries, and operational simulations are provided for demonstration purposes.
+              EarthSync provides specialized resource management coordination and rooftop solar feasibility modeling. Mathematical models are provided as advisory tools to assist residential and community planning.
             </p>
           </div>
         </div>
@@ -96,8 +95,8 @@ export default function TermsPage() {
             GreenPoints are simulated environmental achievement tokens credited exclusively when a dry waste collection request is physically verified and marked as Collected.
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
-            <li>GreenPoints have no monetary cash value and cannot be redeemed for fiat currency or transferred outside the demonstration platform.</li>
-            <li>Partner reward vouchers and campus perks displayed in the demo are illustrative partner simulations.</li>
+            <li>GreenPoints have no monetary cash value and cannot be redeemed for fiat currency or transferred outside the EarthSync platform.</li>
+            <li>Partner reward vouchers and community perks are redeemable through participating eco-partners subject to partner terms.</li>
             <li>The system enforces strict single-crediting logic to prevent duplicate point allocations for the same batch.</li>
           </ul>
         </div>

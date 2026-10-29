@@ -68,7 +68,7 @@ export default function SolarSaathiPage() {
             className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center gap-2 cursor-pointer"
           >
             <FileText className="w-3.5 h-3.5 text-[#FFB800]" />
-            <span>Log Demo Enquiry</span>
+            <span>Request Consultation</span>
           </button>
         </div>
       </div>
@@ -108,14 +108,14 @@ export default function SolarSaathiPage() {
           }`}
         >
           <Compass className="w-4 h-4" />
-          <span>Saved Demo Enquiries ({solarEnquiries.length})</span>
+          <span>Saved Enquiries ({solarEnquiries.length})</span>
         </button>
       </div>
 
       {/* Active Tab View */}
       {activeTab === 'calculator' && <SolarCalculator onOpenEnquiry={handleOpenEnquiry} />}
       {activeTab === 'subsidies' && <SolarSubsidyGuide />}
-      {activeTab === 'enquiries' && <SolarEnquiryList />}
+      {activeTab === 'enquiries' && <SolarEnquiryList onCalculateSolar={() => setActiveTab('calculator')} />}
 
       {/* Modal for Enquiry Form */}
       {enquiryModalOpen && (

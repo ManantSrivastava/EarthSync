@@ -8,59 +8,182 @@ import {
   ArrowRight, 
   CheckCircle2, 
   ShieldCheck, 
-  Package, 
-  Zap, 
-  Clock, 
-  Scale, 
-  Sparkles,
-  Layers,
-  ArrowUpRight
+  Layers
 } from 'lucide-react';
+import { WindTurbineRotor } from '@/components/WindTurbineRotor';
 
 export default function HomePage() {
   return (
-    <div className="w-full space-y-16 sm:space-y-24 py-10">
+    <div className="w-full space-y-16 sm:space-y-24 pb-16">
       
       {/* =========================================================================
-          HERO SECTION (Clean, Spacious, Not Oversized)
+          HERO SECTION - Reference-faithful with 3D animated windmills
           ========================================================================= */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center">
-        <div className="max-w-3xl mx-auto space-y-6">
-          
-          {/* Subtle Tag */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#00B884]/10 border border-[#00B884]/25 text-xs font-semibold text-[#063D2E]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00B884]" />
-            <span>CleanTech Platform</span>
+      <section className="relative w-full overflow-hidden bg-[#F7F9F6]">
+        {/* Main hero frame with continuous wide mountain panorama */}
+        <div className="relative w-full max-w-[1536px] mx-auto min-h-[560px] sm:min-h-[620px] md:min-h-0 md:aspect-[1536/490]">
+
+          {/* 1. Pristine Clean Landscape Backdrop with Continuous Mountains */}
+          <picture className="absolute inset-0 w-full h-full select-none pointer-events-none">
+            <source srcSet="/hero-landscape-clean.webp" type="image/webp" />
+            <img
+              src="/hero-landscape-clean.png"
+              alt="EarthSync renewable energy landscape"
+              className="w-full h-full object-cover object-bottom md:object-fill select-none pointer-events-none"
+              draggable={false}
+            />
+          </picture>
+
+          {/* 2. Realistic 3D Animated Windmill Rotors */}
+          {/* LEFT large foreground turbine — hub center at x=501 (32.62%), y=258 (52.65%) */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+            style={{
+              left: '32.62%',
+              top: '52.65%',
+              width: '11.20%',
+              height: '35.10%',
+            }}
+            title="3D Rotating Wind Turbine"
+          >
+            <WindTurbineRotor
+              id="L"
+              duration="10s"
+              delay="0s"
+              yaw={-18}
+              pitch={4}
+            />
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#17231E] tracking-tight leading-[1.1]">
-            Waste Less. <br className="hidden sm:inline" />
-            <span className="text-[#063D2E]">Power More.</span>
-          </h1>
+          {/* RIGHT large foreground turbine — hub center at x=1053 (68.55%), y=269 (54.90%) */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+            style={{
+              left: '68.55%',
+              top: '54.90%',
+              width: '9.44%',
+              height: '29.60%',
+            }}
+            title="3D Rotating Wind Turbine"
+          >
+            <WindTurbineRotor
+              id="R"
+              duration="12s"
+              delay="-4.5s"
+              yaw={20}
+              pitch={4}
+            />
+          </div>
 
-          {/* Supporting Text */}
-          <p className="text-base sm:text-lg text-[#65736B] leading-relaxed max-w-2xl mx-auto">
-            EarthSync brings smarter recyclable waste management and rooftop solar estimation together in one simple platform.
-          </p>
+          {/* DISTANT centre-left turbine — hub (718, 331) -> 46.75% x 67.55% */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden sm:block"
+            style={{
+              left: '46.75%',
+              top: '67.55%',
+              width: '4.53%',
+              height: '14.20%',
+            }}
+          >
+            <WindTurbineRotor
+              id="DC"
+              duration="14s"
+              delay="-6s"
+              opacity={0.8}
+            />
+          </div>
 
-          {/* Rectangular CTA Buttons */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/waste"
-              className="px-6 py-3 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-semibold text-sm tracking-wide transition-colors flex items-center gap-2"
-            >
-              <span>Explore Smart Waste</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+          {/* DISTANT far-right turbine — hub (1088, 381) -> 70.83% x 77.76% */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden sm:block"
+            style={{
+              left: '70.83%',
+              top: '77.76%',
+              width: '3.87%',
+              height: '12.10%',
+            }}
+          >
+            <WindTurbineRotor
+              id="DR"
+              duration="15.5s"
+              delay="-9s"
+              opacity={0.75}
+            />
+          </div>
 
-            <Link
-              href="/solar"
-              className="px-6 py-3 rounded-md bg-white hover:bg-[#F8FAF7] text-[#17231E] font-semibold text-sm tracking-wide border border-[#E2E9E3] hover:border-[#65736B]/40 transition-colors flex items-center gap-2"
-            >
-              <span>Explore SolarSaathi</span>
-              <ArrowRight className="w-4 h-4 text-[#FFB800]" />
-            </Link>
+          {/* DISTANT far-left turbine — hub (421, 374) -> 27.41% x 76.33% */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden sm:block"
+            style={{
+              left: '27.41%',
+              top: '76.33%',
+              width: '3.20%',
+              height: '10.00%',
+            }}
+          >
+            <WindTurbineRotor
+              id="DL"
+              duration="13s"
+              delay="-2s"
+              opacity={0.75}
+            />
+          </div>
+
+          {/* DISTANT mid-right turbine — hub (885, 368) -> 57.62% x 75.10% */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none hidden sm:block"
+            style={{
+              left: '57.62%',
+              top: '75.10%',
+              width: '3.47%',
+              height: '10.90%',
+            }}
+          >
+            <WindTurbineRotor
+              id="DMR"
+              duration="16s"
+              delay="-11s"
+              opacity={0.7}
+            />
+          </div>
+
+          {/* 3. Central Typography Stack & CTA Buttons */}
+          <div className="relative z-20 w-full max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 md:pt-6 lg:pt-8 text-center flex flex-col items-center">
+
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[60px] xl:text-[66px] font-extrabold tracking-tight leading-[1.08] mb-2 sm:mb-3">
+              <span className="text-[#0E2E20]">Waste Less.</span>
+              <br />
+              <span className="text-[#00A86B]">Power More.</span>
+            </h1>
+
+            {/* Supporting Description */}
+            <p className="text-xs sm:text-sm md:text-[15px] text-[#52685C] leading-relaxed max-w-[440px] md:max-w-[480px] mx-auto mb-5 md:mb-6">
+              Smarter recyclable waste management and rooftop solar estimation,
+              brought together in one simple platform.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-3.5">
+              <Link
+                href="/waste"
+                className="inline-flex items-center gap-2.5 px-5 py-2.5 sm:py-3 rounded-lg bg-[#0B3D2E] hover:bg-[#082D21] text-white font-semibold text-xs sm:text-sm tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer"
+              >
+                <Recycle className="w-4 h-4 shrink-0 text-white" />
+                <span>Explore Smart Waste</span>
+                <ArrowRight className="w-4 h-4 shrink-0 text-white" />
+              </Link>
+
+              <Link
+                href="/solar"
+                className="inline-flex items-center gap-2.5 px-5 py-2.5 sm:py-3 rounded-lg bg-white hover:bg-[#F5F9F6] text-[#17231E] font-semibold text-xs sm:text-sm tracking-wide border border-[#DDE6E0] hover:border-[#B9CCBF] transition-all shadow-sm hover:shadow cursor-pointer"
+              >
+                <Sun className="w-4 h-4 text-[#F59E0B] fill-[#F59E0B] shrink-0" />
+                <span>Explore SolarSaathi</span>
+                <ArrowRight className="w-4 h-4 text-[#F59E0B] shrink-0" />
+              </Link>
+            </div>
+
           </div>
 
         </div>
@@ -89,195 +212,100 @@ export default function HomePage() {
               <div className="flex items-center justify-between pb-4 border-b border-[#E2E9E3]">
                 <div className="flex items-center gap-2.5">
                   <div className="w-10 h-10 rounded-md bg-[#00B884]/10 border border-[#00B884]/20 flex items-center justify-center text-[#063D2E]">
-                    <Recycle className="w-5 h-5 text-[#00B884]" />
+                    <Recycle className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#65736B]">
-                      Service 01
-                    </span>
-                    <h3 className="text-xl font-bold text-[#17231E]">
-                      Smart Waste Management
-                    </h3>
+                    <span className="text-xs font-semibold tracking-wider text-[#00B884] uppercase">Service 01</span>
+                    <h3 className="text-xl font-bold text-[#17231E]">Smart Waste Management</h3>
                   </div>
                 </div>
-                <span className="text-xs font-semibold text-[#063D2E] bg-[#00B884]/10 px-2.5 py-1 rounded border border-[#00B884]/20">
-                  On-Demand
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#E7F6EC] text-[#063D2E] border border-[#00B884]/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00B884]" />
+                  Active in Jaipur
                 </span>
               </div>
 
-              {/* Clean Recycling Schematic Visual */}
-              <div className="w-full bg-[#F8FAF7] rounded-md border border-[#E2E9E3] p-6 flex flex-col items-center justify-center">
-                <svg
-                  viewBox="0 0 320 120"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full max-w-[280px] h-auto text-[#063D2E]"
-                >
-                  {/* Subtle Background Lines */}
-                  <line x1="10" y1="60" x2="310" y2="60" stroke="#E2E9E3" strokeWidth="1.5" strokeDasharray="4 4" />
-                  
-                  {/* Step 1: Segregation */}
-                  <rect x="20" y="30" width="60" height="60" rx="6" fill="#FFFFFF" stroke="#063D2E" strokeWidth="1.5" />
-                  <path d="M42 50 L50 42 L58 50" stroke="#00B884" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M50 44 V70" stroke="#00B884" strokeWidth="2" strokeLinecap="round" />
-                  <text x="50" y="82" fontSize="8" fill="#17231E" textAnchor="middle" fontWeight="bold">SORT</text>
-                  
-                  {/* Flow Arrow 1 */}
-                  <path d="M92 60 H118" stroke="#063D2E" strokeWidth="1.5" strokeLinecap="round" />
-                  <polygon points="120,60 114,56 114,64" fill="#063D2E" />
-
-                  {/* Step 2: Calibrated Scale */}
-                  <rect x="130" y="30" width="60" height="60" rx="6" fill="#FFFFFF" stroke="#063D2E" strokeWidth="1.5" />
-                  <circle cx="160" cy="55" r="14" stroke="#063D2E" strokeWidth="1.5" fill="#F8FAF7" />
-                  <line x1="160" y1="55" x2="167" y2="50" stroke="#00B884" strokeWidth="2" strokeLinecap="round" />
-                  <text x="160" y="82" fontSize="8" fill="#17231E" textAnchor="middle" fontWeight="bold">WEIGH</text>
-
-                  {/* Flow Arrow 2 */}
-                  <path d="M202 60 H228" stroke="#063D2E" strokeWidth="1.5" strokeLinecap="round" />
-                  <polygon points="230,60 224,56 224,64" fill="#063D2E" />
-
-                  {/* Step 3: Circular Credit */}
-                  <rect x="240" y="30" width="60" height="60" rx="6" fill="#FFFFFF" stroke="#063D2E" strokeWidth="1.5" />
-                  <polygon points="270,44 274,52 282,53 276,59 278,67 270,63 262,67 264,59 258,53 266,52" fill="#FFB800" stroke="#E2E9E3" strokeWidth="0.5" />
-                  <text x="270" y="82" fontSize="8" fill="#063D2E" textAnchor="middle" fontWeight="bold">REWARD</text>
-                </svg>
-                <span className="text-[11px] text-[#65736B] mt-2">
-                  Doorstep Collection → Verified Weighing → Circular Recovery
-                </span>
-              </div>
-
-              {/* Exact Required Description */}
-              <p className="text-sm text-[#17231E] leading-relaxed">
-                Explore recyclable waste pickup requests, track demo collection status, and understand how recyclable materials can be recovered.
+              {/* Description */}
+              <p className="text-sm text-[#4E5D54] leading-relaxed">
+                Schedule reliable pickups for paper, plastics, and metals. Track vehicle ETAs in real time and convert everyday segregation into redeemable GreenPoints.
               </p>
 
-              {/* Short Feature Highlights */}
-              <div className="grid grid-cols-2 gap-2 text-xs text-[#65736B] pt-1">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Paper, Cardboard, Plastic</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Metal &amp; E-waste streams</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Lifecycle status tracking</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Earn verified GreenPoints</span>
-                </div>
+              {/* Feature Highlights */}
+              <div className="space-y-2.5">
+                {[
+                  'Scheduled doorstep pickup with real-time route tracking',
+                  'Earn GreenPoints per verified kilogram of recyclables',
+                  'Guaranteed transparent tier pricing across all categories',
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#2D3E35]">
+                    <CheckCircle2 className="w-4 h-4 text-[#00B884] shrink-0 mt-0.5" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
               </div>
-
             </div>
 
-            {/* Action Button */}
-            <div className="pt-8">
-              <Link
-                href="/waste"
-                className="w-full py-3 px-4 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center justify-center gap-2"
+            {/* Action Footer */}
+            <div className="pt-6 mt-6 border-t border-[#E2E9E3] flex items-center justify-between">
+              <Link 
+                href="/waste" 
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-[#063D2E] hover:bg-[#094D3B] text-white font-medium text-sm transition-colors shadow-2xs"
               >
-                <span>Explore Smart Waste</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Book a Waste Pickup</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
-          {/* Service Card 2: SolarSaathi */}
+          {/* Service Card 2: SolarSaathi Rooftop Estimation */}
           <div className="bg-white rounded-lg border border-[#E2E9E3] p-8 flex flex-col justify-between hover:border-[#063D2E]/40 transition-colors">
             <div className="space-y-6">
               
               {/* Header & Visual */}
               <div className="flex items-center justify-between pb-4 border-b border-[#E2E9E3]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-md bg-[#FFB800]/15 border border-[#FFB800]/30 flex items-center justify-center text-[#17231E]">
-                    <Sun className="w-5 h-5 text-[#FFB800]" />
+                  <div className="w-10 h-10 rounded-md bg-[#00B884]/10 border border-[#00B884]/20 flex items-center justify-center text-[#063D2E]">
+                    <Sun className="w-5 h-5 text-[#063D2E]" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#65736B]">
-                      Service 02
-                    </span>
-                    <h3 className="text-xl font-bold text-[#17231E]">
-                      SolarSaathi
-                    </h3>
+                    <span className="text-xs font-semibold tracking-wider text-[#00B884] uppercase">Service 02</span>
+                    <h3 className="text-xl font-bold text-[#17231E]">SolarSaathi</h3>
                   </div>
                 </div>
-                <span className="text-xs font-semibold text-[#17231E] bg-[#FFB800]/15 px-2.5 py-1 rounded border border-[#FFB800]/30">
-                  Estimator
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-[#E7F6EC] text-[#063D2E] border border-[#00B884]/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00B884]" />
+                  MNRE Subsidy Ready
                 </span>
               </div>
 
-              {/* Clean Rooftop Solar Schematic Visual */}
-              <div className="w-full bg-[#F8FAF7] rounded-md border border-[#E2E9E3] p-6 flex flex-col items-center justify-center">
-                <svg
-                  viewBox="0 0 320 120"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full max-w-[280px] h-auto"
-                >
-                  {/* Subtle Grid */}
-                  <line x1="20" y1="105" x2="300" y2="105" stroke="#E2E9E3" strokeWidth="1" />
-                  
-                  {/* Rooftop Base */}
-                  <polygon points="60,65 160,35 260,65 160,95" fill="#FFFFFF" stroke="#063D2E" strokeWidth="1.5" />
-                  
-                  {/* PV Cells on Left Slope */}
-                  <polygon points="80,63 150,42 160,50 90,71" fill="#063D2E" stroke="#042E24" strokeWidth="0.8" />
-                  <polygon points="98,73 168,52 178,60 108,81" fill="#00B884" stroke="#042E24" strokeWidth="0.8" />
-
-                  {/* Sun Icon Vector */}
-                  <circle cx="270" cy="28" r="10" fill="#FFB800" stroke="#FFB800" strokeWidth="1" />
-                  <line x1="270" y1="12" x2="270" y2="8" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="270" y1="44" x2="270" y2="48" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="254" y1="28" x2="250" y2="28" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="286" y1="28" x2="290" y2="28" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round" />
-
-                  {/* Connection line down to inverter */}
-                  <path d="M160 95 V108" stroke="#063D2E" strokeWidth="1.5" strokeDasharray="2 2" />
-                  <rect x="150" y="103" width="20" height="10" rx="2" fill="#063D2E" />
-                </svg>
-                <span className="text-[11px] text-[#65736B] mt-2">
-                  Rooftop Sizing → Solar Yield Modeling → Financial Payback
-                </span>
-              </div>
-
-              {/* Exact Required Description */}
-              <p className="text-sm text-[#17231E] leading-relaxed">
-                Estimate your rooftop solar capacity, potential electricity savings, and approximate payback period.
+              {/* Description */}
+              <p className="text-sm text-[#4E5D54] leading-relaxed">
+                Estimate rooftop solar capacity, monthly power generation, payback timeline, and eligible central subsidies with instant state tariff benchmarks.
               </p>
 
-              {/* Short Feature Highlights */}
-              <div className="grid grid-cols-2 gap-2 text-xs text-[#65736B] pt-1">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Optimal capacity in kW</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Monthly generation (kWh)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Bill savings calculation</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884] shrink-0" />
-                  <span>Estimated payback years</span>
-                </div>
+              {/* Feature Highlights */}
+              <div className="space-y-2.5">
+                {[
+                  'Precision solar potential modeled on local irradiance data',
+                  'Tiered central subsidy calculator up to ₹78,000 allowance',
+                  'Downloadable pre-feasibility PDF proposal for vendors',
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#2D3E35]">
+                    <CheckCircle2 className="w-4 h-4 text-[#00B884] shrink-0 mt-0.5" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
               </div>
-
             </div>
 
-            {/* Action Button */}
-            <div className="pt-8">
-              <Link
-                href="/solar"
-                className="w-full py-3 px-4 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-medium text-xs tracking-wide transition-colors flex items-center justify-center gap-2"
+            {/* Action Footer */}
+            <div className="pt-6 mt-6 border-t border-[#E2E9E3] flex items-center justify-between">
+              <Link 
+                href="/solar" 
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md bg-[#063D2E] hover:bg-[#094D3B] text-white font-medium text-sm transition-colors shadow-2xs"
               >
-                <span>Explore SolarSaathi</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Calculate Solar Potential</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -286,151 +314,116 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          HOW IT WORKS SECTION (Simple, Transparent 4-Step Process)
+          PLATFORM CAPABILITIES & STANDARDS
+          ========================================================================= */}
+      <section className="bg-white border-y border-[#E2E9E3] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div className="text-3xl lg:text-4xl font-bold text-[#063D2E]">6 Streams</div>
+            <div className="text-xs sm:text-sm text-[#4E5D54] mt-1 font-medium">Segregated Recyclables</div>
+          </div>
+          <div>
+            <div className="text-3xl lg:text-4xl font-bold text-[#063D2E]">100%</div>
+            <div className="text-xs sm:text-sm text-[#4E5D54] mt-1 font-medium">Verified Scale Weights</div>
+          </div>
+          <div>
+            <div className="text-3xl lg:text-4xl font-bold text-[#063D2E]">25 Years</div>
+            <div className="text-xs sm:text-sm text-[#4E5D54] mt-1 font-medium">Solar Lifecycle Modeling</div>
+          </div>
+          <div>
+            <div className="text-3xl lg:text-4xl font-bold text-[#063D2E]">Direct Credit</div>
+            <div className="text-xs sm:text-sm text-[#4E5D54] mt-1 font-medium">GreenPoints on Collection</div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          HOW IT WORKS (Step-by-step clarity)
+          ========================================================================= */}
+      <section id="about" className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-12">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#17231E] tracking-tight">
+            How EarthSync Works
+          </h2>
+          <p className="text-sm text-[#65736B]">
+            A unified interface for community circularity and decentralized rooftop clean energy.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* Step 1 */}
+          <div className="bg-white rounded-lg border border-[#E2E9E3] p-6 space-y-3 relative">
+            <div className="w-8 h-8 rounded-full bg-[#063D2E] text-white flex items-center justify-center font-bold text-sm">
+              1
+            </div>
+            <h3 className="text-base font-semibold text-[#17231E]">Segregate & Schedule</h3>
+            <p className="text-xs sm:text-sm text-[#4E5D54] leading-relaxed">
+              Book doorstep pickup for sorted household recyclables with guaranteed transparent category pricing and assigned driver tracking.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="bg-white rounded-lg border border-[#E2E9E3] p-6 space-y-3 relative">
+            <div className="w-8 h-8 rounded-full bg-[#063D2E] text-white flex items-center justify-center font-bold text-sm">
+              2
+            </div>
+            <h3 className="text-base font-semibold text-[#17231E]">Earn GreenPoints</h3>
+            <p className="text-xs sm:text-sm text-[#4E5D54] leading-relaxed">
+              Every verified kilogram deposited converts instantly into GreenPoints, redeemable towards waste pickup fees or solar installation partners.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="bg-white rounded-lg border border-[#E2E9E3] p-6 space-y-3 relative">
+            <div className="w-8 h-8 rounded-full bg-[#063D2E] text-white flex items-center justify-center font-bold text-sm">
+              3
+            </div>
+            <h3 className="text-base font-semibold text-[#17231E]">Power Your Rooftop</h3>
+            <p className="text-xs sm:text-sm text-[#4E5D54] leading-relaxed">
+              Enter your sanctioned load or average power bill into SolarSaathi to simulate optimal system capacity, subsidy yields, and net payback.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          PLATFORM ARCHITECTURE & ACADEMIC HIGHLIGHTS
           ========================================================================= */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="bg-white rounded-lg border border-[#E2E9E3] p-8 sm:p-12 space-y-10">
-          
-          <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[#F8FAF7] text-[#063D2E] border border-[#E2E9E3]">
-              <Layers className="w-3.5 h-3.5 text-[#00B884]" />
-              <span>Step-by-Step Flow</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#17231E] tracking-tight">
-              How EarthSync Works
-            </h2>
-            <p className="text-sm text-[#65736B] leading-relaxed">
-              A straightforward two-pillar CleanTech platform connecting recyclable recovery with rooftop clean energy planning.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* Step 1 */}
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-3">
-              <span className="text-2xl font-bold text-[#063D2E] font-mono block">
-                01
-              </span>
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Select Service
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Choose between Smart Waste collection for dry recyclables or the SolarSaathi rooftop estimator.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-3">
-              <span className="text-2xl font-bold text-[#063D2E] font-mono block">
-                02
-              </span>
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Provide Parameters
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Specify waste categories and quantity, or enter your monthly electricity bill and available roof space.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-3">
-              <span className="text-2xl font-bold text-[#063D2E] font-mono block">
-                03
-              </span>
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Track &amp; Calculate
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Review request status with cancellation control, or inspect instant interactive solar capacity models.
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-3">
-              <span className="text-2xl font-bold text-[#063D2E] font-mono block">
-                04
-              </span>
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Realize Clean Value
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Earn GreenPoints once collections are completed, or project your long-term energy savings over 25 years.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          ABOUT EARTHSYNC SECTION (id="about")
-          ========================================================================= */}
-      <section id="about" className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-24 pb-6">
-        <div className="bg-white rounded-lg border border-[#E2E9E3] p-8 sm:p-12 space-y-8">
-          
-          <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-[#F8FAF7] text-[#063D2E] border border-[#E2E9E3]">
+        <div className="bg-[#F8FAF7] rounded-xl border border-[#E2E9E3] p-8 sm:p-10">
+          <div className="max-w-3xl space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#00B884]/15 text-[#063D2E]">
               <ShieldCheck className="w-3.5 h-3.5 text-[#00B884]" />
-              <span>Academic Context</span>
+              Dual Impact Framework
             </div>
+
             <h2 className="text-2xl sm:text-3xl font-bold text-[#17231E] tracking-tight">
-              About EarthSync
+              Bridging Household Waste & Decentralized Solar
             </h2>
-            <p className="text-sm text-[#65736B] leading-relaxed">
-              Developed as a CleanTech innovation project for the Essentials of Business Management curriculum.
+
+            <p className="text-sm text-[#4E5D54] leading-relaxed">
+              Traditional sustainability platforms isolate waste management from clean energy adoption. EarthSync bridges localized recycling incentives with residential rooftop solar adoption within a singular civic ecosystem.
             </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="flex items-center gap-3 p-3.5 rounded-lg bg-white border border-[#E2E9E3]">
+                <Layers className="w-5 h-5 text-[#00B884] shrink-0" />
+                <div className="text-xs">
+                  <div className="font-semibold text-[#17231E]">Synchronized Ecosystem</div>
+                  <div className="text-[#65736B]">Unified GreenPoints across all actions</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3.5 rounded-lg bg-white border border-[#E2E9E3]">
+                <Sun className="w-5 h-5 text-[#00B884] shrink-0" />
+                <div className="text-xs">
+                  <div className="font-semibold text-[#17231E]">MNRE Regulatory Align</div>
+                  <div className="text-[#65736B]">Standardized rooftop benchmark calculations</div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-2">
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Two Distinct Services
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Instead of bundling unrelated dashboards, EarthSync maintains dedicated interfaces for Smart Waste logistics and SolarSaathi feasibility modeling.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-2">
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Honest Simulation Scope
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                All mock requests and enquiries are stored locally in your browser. This project is a classroom proof-of-concept and does not displace municipal sanitation services.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] space-y-2">
-              <h3 className="font-bold text-sm text-[#17231E]">
-                Transparent Metrics
-              </h3>
-              <p className="text-xs text-[#65736B] leading-relaxed">
-                Calculations use standard engineering assumptions: 4.8 peak sun hours, 78% system performance ratio, and Central Pollution Control Board recycling conversion rates.
-              </p>
-            </div>
-
-          </div>
-
-          <div className="pt-6 border-t border-[#E2E9E3] flex flex-wrap items-center justify-between gap-4 text-xs text-[#65736B]">
-            <div className="flex items-center gap-4">
-              <Link href="/waste" className="font-medium text-[#063D2E] hover:underline flex items-center gap-1">
-                <span>Go to Smart Waste</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </Link>
-              <span>•</span>
-              <Link href="/solar" className="font-medium text-[#063D2E] hover:underline flex items-center gap-1">
-                <span>Go to SolarSaathi</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            <span className="text-[11px]">
-              Academic Version 1.0 • Essentials of Business Management
-            </span>
-          </div>
-
         </div>
       </section>
 

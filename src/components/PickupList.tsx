@@ -71,7 +71,7 @@ export const PickupList: React.FC<Props> = ({ onOpenSchedule }) => {
             className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#063D2E] hover:bg-[#042E24] px-3.5 py-1.5 rounded-md transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>New Demo Request</span>
+            <span>Schedule Pickup</span>
           </button>
         )}
       </div>
@@ -82,18 +82,22 @@ export const PickupList: React.FC<Props> = ({ onOpenSchedule }) => {
           <div className="w-12 h-12 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] text-[#063D2E] flex items-center justify-center mb-3">
             <PackageOpen className="w-6 h-6" />
           </div>
-          <h4 className="font-bold text-[#17231E] text-base">No Requests Found</h4>
+          <h4 className="font-bold text-[#17231E] text-base">
+            {filter === 'All'
+              ? "You haven't submitted any waste requests yet."
+              : `No requests matching "${filter}"`}
+          </h4>
           <p className="text-xs text-[#65736B] max-w-sm mt-1">
             {filter === 'All'
-              ? 'No waste pickup requests recorded yet. Submit a demo request above to simulate collection and GreenPoints.'
-              : `No requests currently matching the status "${filter}".`}
+              ? 'Schedule a segregated collection for paper, plastic, metal, glass, or e-waste to earn GreenPoints.'
+              : `No waste collection requests currently found with status "${filter}".`}
           </p>
           {onOpenSchedule && (
             <button
               onClick={onOpenSchedule}
               className="mt-4 px-4 py-2 rounded-md bg-[#063D2E] text-white text-xs font-semibold hover:bg-[#042E24] transition-colors cursor-pointer"
             >
-              Submit Demo Request
+              Explore Smart Waste
             </button>
           )}
         </div>

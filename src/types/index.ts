@@ -37,7 +37,6 @@ export interface PickupRequest {
   status: PickupStatus;
   pointsEarned: number;
   createdAt: string;
-  isSample?: boolean;
 }
 
 export interface SolarCalculationInput {
@@ -91,7 +90,6 @@ export interface SolarEnquiry {
   notes?: string;
   status: 'Enquiry Received' | 'Site Survey Scheduled' | 'Feasibility Ready';
   submittedAt: string;
-  isSample?: boolean;
 }
 
 export interface RewardItem {
@@ -110,7 +108,6 @@ export interface ActivityItem {
   description: string;
   timestamp: string;
   type: 'waste_pickup' | 'waste_collected' | 'solar_enquiry' | 'reward_redeemed' | 'system';
-  isSample?: boolean;
 }
 
 export interface UserProfile {

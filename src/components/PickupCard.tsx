@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const PickupCard: React.FC<Props> = ({ pickup }) => {
-  const { cancelPickup, updatePickupStatus } = useEarthSync();
+  const { cancelPickup } = useEarthSync();
 
   const categoryDef = WASTE_CATEGORIES.find((c) => c.id === pickup.category);
   const pointsRate = categoryDef ? categoryDef.pointsPerKg : 5;
@@ -68,19 +68,13 @@ export const PickupCard: React.FC<Props> = ({ pickup }) => {
   return (
     <div className="bg-white rounded-lg border border-[#E2E9E3] p-5 transition-all hover:border-[#65736B]/30 flex flex-col justify-between">
       <div>
-        {/* Header row: Status, Request ID, Sample Tag, Points */}
+        {/* Header row: Status, Request ID, Points */}
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${statusInfo.badgeClass}`}>
               {statusInfo.icon}
               {statusInfo.label}
             </span>
-
-            {pickup.isSample && (
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F8FAF7] text-[#65736B] border border-[#E2E9E3] uppercase tracking-wider">
-                Demo
-              </span>
-            )}
             <span className="text-xs text-[#65736B] font-mono">#{pickup.id.slice(-6)}</span>
           </div>
 
@@ -125,48 +119,45 @@ export const PickupCard: React.FC<Props> = ({ pickup }) => {
         </div>
       </div>
 
-      {/* Action / Simulation Controls */}
-      <div className="mt-4 pt-3 border-t border-[#E2E9E3] flex flex-col gap-2">
-        <div className="flex items-center justify-between gap-2">
-          {pickup.status === 'Requested' && (
-            <button
-              onClick={() => updatePickupStatus(pickup.id, 'Scheduled')}
-              className="text-[11px] font-medium text-sky-800 hover:text-sky-900 bg-sky-50 hover:bg-sky-100 px-2.5 py-1.5 rounded-md border border-sky-200 transition-colors flex items-center gap-1 cursor-pointer"
-              title="Simulate dispatching demo driver"
-            >
-              <Truck className="w-3 h-3" />
-              <span>Simulate: Schedule</span>
-            </button>
-          )}
+      {/* Action / Status Footer */}
+      <div className="mt-4 pt-3 border-t border-[#E2E9E3] flex items-center justify-between gap-2">
+        {pickup.status === 'Requested' && (
+          <span className="text-[11px] text-amber-800 font-medium flex items-center gap-1">
+            <Clock3 className="w-3.5 h-3.5 text-amber-600" />
+            <span>Awaiting dispatch</span>
+          </span>
+        )}
 
-          {pickup.status === 'Scheduled' && (
-            <button
-              onClick={() => updatePickupStatus(pickup.id, 'Collected')}
-              className="text-[11px] font-medium text-[#063D2E] hover:text-[#042E24] bg-[#00B884]/15 hover:bg-[#00B884]/25 px-2.5 py-1.5 rounded-md border border-[#00B884]/30 transition-colors flex items-center gap-1 cursor-pointer"
-              title="Simulate physical collection & award points"
-            >
-              <CheckCircle2 className="w-3 h-3 text-[#00B884]" />
-              <span>Simulate: Complete (+Points)</span>
-            </button>
-          )}
+        {pickup.status === 'Scheduled' && (
+          <span className="text-[11px] text-sky-800 font-medium flex items-center gap-1">
+            <Truck className="w-3.5 h-3.5 text-sky-600" />
+            <span>Driver scheduled</span>
+          </span>
+        )}
 
-          {pickup.status === 'Collected' && (
-            <span className="text-[11px] text-[#063D2E] font-medium flex items-center gap-1 py-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884]" />
-              Points Credited
-            </span>
-          )}
+        {pickup.status === 'Collected' && (
+          <span className="text-[11px] text-[#063D2E] font-medium flex items-center gap-1 py-0.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#00B884]" />
+            <span>Collection verified</span>
+          </span>
+        )}
 
-          {/* Cancel Option for pending requests */}
-          {isPending && (
-            <button
-              onClick={() => cancelPickup(pickup.id)}
-              className="text-[11px] font-medium text-rose-700 hover:text-rose-800 hover:bg-rose-50 px-2.5 py-1.5 rounded-md transition-colors ml-auto border border-rose-200 cursor-pointer"
-            >
-              Cancel Request
-            </button>
-          )}
-        </div>
+        {pickup.status === 'Cancelled' && (
+          <span className="text-[11px] text-[#65736B] font-medium flex items-center gap-1 py-0.5">
+            <Ban className="w-3.5 h-3.5 text-[#65736B]" />
+            <span>Cancelled</span>
+          </span>
+        )}
+
+        {/* Cancel Option for pending requests */}
+        {isPending && (
+          <button
+            onClick={() => cancelPickup(pickup.id)}
+            className="text-[11px] font-medium text-rose-700 hover:text-rose-800 hover:bg-rose-50 px-2.5 py-1.5 rounded-md transition-colors ml-auto border border-rose-200 cursor-pointer"
+          >
+            Cancel Request
+          </button>
+        )}
       </div>
     </div>
   );

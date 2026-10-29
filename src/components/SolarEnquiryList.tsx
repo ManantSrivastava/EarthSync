@@ -4,17 +4,40 @@ import React from 'react';
 import { useEarthSync } from '@/context/EarthSyncContext';
 import { Sun, Calendar, MapPin, Phone, Mail, FileText, CheckCircle2, Clock } from 'lucide-react';
 
-export const SolarEnquiryList: React.FC = () => {
+interface Props {
+  onCalculateSolar?: () => void;
+}
+
+export const SolarEnquiryList: React.FC<Props> = ({ onCalculateSolar }) => {
   const { solarEnquiries } = useEarthSync();
 
   if (solarEnquiries.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-[#E2E9E3] p-10 text-center text-[#65736B]">
-        <Sun className="w-8 h-8 text-[#FFB800] mx-auto mb-2 opacity-50" />
-        <p className="text-sm font-semibold text-[#17231E]">No Solar Enquiries Submitted Yet</p>
-        <p className="text-xs text-[#65736B] mt-1">
-          Use the SolarSaathi calculator above to size your rooftop solar system and log an enquiry.
+      <div className="bg-white rounded-lg border border-[#E2E9E3] p-12 text-center text-[#65736B] flex flex-col items-center justify-center">
+        <div className="w-12 h-12 rounded-md bg-[#F8FAF7] border border-[#E2E9E3] text-[#FFB800] flex items-center justify-center mb-3">
+          <Sun className="w-6 h-6" />
+        </div>
+        <h4 className="font-bold text-[#17231E] text-base">
+          You haven&apos;t saved any solar estimates yet.
+        </h4>
+        <p className="text-xs text-[#65736B] max-w-sm mt-1">
+          Use the SolarSaathi calculator to estimate system size, power generation, and payback period.
         </p>
+        {onCalculateSolar ? (
+          <button
+            onClick={onCalculateSolar}
+            className="mt-4 px-4 py-2 rounded-md bg-[#063D2E] text-white text-xs font-semibold hover:bg-[#042E24] transition-colors cursor-pointer"
+          >
+            Calculate Solar Potential
+          </button>
+        ) : (
+          <a
+            href="/solar"
+            className="mt-4 px-4 py-2 rounded-md bg-[#063D2E] text-white text-xs font-semibold hover:bg-[#042E24] transition-colors inline-block"
+          >
+            Calculate Solar Potential
+          </a>
+        )}
       </div>
     );
   }
@@ -24,9 +47,9 @@ export const SolarEnquiryList: React.FC = () => {
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-bold text-[#17231E] flex items-center gap-2">
           <FileText className="w-4 h-4 text-[#063D2E]" />
-          <span>Logged Solar Provider Enquiries ({solarEnquiries.length})</span>
+          <span>Logged Solar Enquiries ({solarEnquiries.length})</span>
         </h4>
-        <span className="text-[11px] text-[#65736B]">Stored in browser local storage</span>
+        <span className="text-[11px] text-[#65736B]">Personal consultations log</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -63,11 +86,6 @@ export const SolarEnquiryList: React.FC = () => {
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-2">
                     {statusBadge}
-                    {enq.isSample && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F8FAF7] text-[#65736B] border border-[#E2E9E3] uppercase tracking-wider">
-                        Demo
-                      </span>
-                    )}
                   </div>
                   <span className="text-xs text-[#65736B] font-mono">#{enq.id.slice(-6)}</span>
                 </div>

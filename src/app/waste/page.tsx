@@ -10,8 +10,6 @@ import {
   CalendarPlus, 
   History, 
   Sparkles, 
-  Info,
-  Clock3,
   CheckCircle2,
   Package,
   FileText,
@@ -56,16 +54,6 @@ export default function SmartWastePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8 animate-in fade-in duration-200">
       
-      {/* Academic Demonstration Disclaimer Banner */}
-      <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-[#E2E9E3] text-xs text-[#65736B]">
-        <Info className="w-4 h-4 text-[#063D2E] shrink-0 mt-0.5" />
-        <div className="leading-relaxed">
-          <strong className="text-[#17231E]">Academic Frontend Demonstration: </strong>
-          This application is a student project prototype for Essentials of Business Management. Pickup scheduling and tracking are simulated locally within your browser. 
-          <span className="text-[#17231E] font-medium"> No requests are sent to municipal sanitation authorities, and no real waste pickup is booked.</span>
-        </div>
-      </div>
-
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-lg border border-[#E2E9E3]">
         <div className="space-y-1.5">
@@ -77,7 +65,7 @@ export default function SmartWastePage() {
             Smart Waste Management
           </h1>
           <p className="text-sm text-[#65736B] max-w-2xl leading-relaxed">
-            Make recyclable waste easier to organize and track.
+            Make recyclable waste easier to organize, collect, and track.
           </p>
         </div>
 
@@ -90,7 +78,7 @@ export default function SmartWastePage() {
             <Sparkles className="w-3.5 h-3.5 text-[#FFB800]" />
           </div>
           <div className="text-2xl font-bold text-[#FFB800]">
-            {isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '...'}{' '}
+            {isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '0'}{' '}
             <span className="text-xs font-normal text-white/70">pts</span>
           </div>
           <p className="text-[11px] text-white/80 mt-1">
@@ -107,7 +95,7 @@ export default function SmartWastePage() {
             <span>Accepted Recyclable Streams & GreenPoints Rates</span>
           </h2>
           <span className="text-xs text-[#65736B]">
-            Demo rates: Credited exclusively upon verified pickup completion
+            Earning rates: Credited exclusively upon verified pickup completion
           </span>
         </div>
 
@@ -179,7 +167,7 @@ export default function SmartWastePage() {
             <div className="mb-6 pb-4 border-b border-[#E2E9E3]">
               <h2 className="text-base font-bold text-[#17231E]">Submit Recyclable Waste Request</h2>
               <p className="text-xs text-[#65736B] mt-0.5">
-                Fill out the demo request below to schedule a segregated dry waste collection slot.
+                Fill out the request below to schedule a segregated dry waste collection slot.
               </p>
             </div>
 
@@ -261,7 +249,7 @@ export default function SmartWastePage() {
           <div className="bg-white p-6 rounded-lg border border-[#E2E9E3]">
             <h2 className="text-base font-bold text-[#17231E] mb-1">Waste Collection History</h2>
             <p className="text-xs text-[#65736B] mb-4">
-              Track submitted demo requests, review statuses, test simulated status updates, or cancel pending bookings.
+              Track submitted requests, review statuses, and manage your scheduled pickups.
             </p>
             <PickupList onOpenSchedule={() => setActiveTab('schedule')} />
           </div>

@@ -11,7 +11,6 @@ import {
   Maximize2, 
   TrendingUp, 
   Info,
-  Calendar,
   HelpCircle,
   Clock,
   ChevronDown,
@@ -374,13 +373,13 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
             </div>
           </div>
 
-          {/* Action Button to Log Demo Enquiry if supported */}
+          {/* Action Button to Save Solar Estimate */}
           {onOpenEnquiry && (
             <div className="p-4 rounded-lg bg-[#F8FAF7] border border-[#E2E9E3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
                 <h5 className="font-bold text-xs text-[#17231E]">Want to save this solar configuration?</h5>
                 <p className="text-[11px] text-[#65736B]">
-                  Record your modeled specifications into your local demo enquiry log.
+                  Save your modeled specifications and request an installer consultation.
                 </p>
               </div>
               <button
@@ -394,7 +393,7 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
                 }
                 className="px-4 py-2 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white text-xs font-semibold tracking-wide transition-colors cursor-pointer shrink-0"
               >
-                Log Demo Enquiry
+                Save Solar Estimate
               </button>
             </div>
           )}

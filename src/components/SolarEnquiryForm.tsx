@@ -85,10 +85,10 @@ export const SolarEnquiryForm: React.FC<Props> = ({
             <span className="p-1 rounded bg-white/10 text-[#FFB800]">
               <Sun className="w-5 h-5" />
             </span>
-            <h3 className="font-bold text-lg text-white">SolarSaathi Installer Demo Enquiry</h3>
+            <h3 className="font-bold text-lg text-white">SolarSaathi Solar Consultation Request</h3>
           </div>
           <p className="text-xs text-white/80">
-            Log your technical specifications into local storage for presentation review.
+            Submit your technical specifications to connect with verified solar EPC installers.
           </p>
         </div>
         {onClose && (
@@ -106,7 +106,7 @@ export const SolarEnquiryForm: React.FC<Props> = ({
       <div className="bg-[#F8FAF7] border-b border-[#E2E9E3] px-6 py-2.5 flex items-center gap-2 text-[11px] text-[#65736B]">
         <ShieldAlert className="w-4 h-4 text-[#FFB800] shrink-0" />
         <span>
-          Academic demonstration prototype: Enquiries are stored locally in your browser. No commercial contract is initiated.
+          Your modeled specifications will be forwarded to certified solar partners in your region.
         </span>
       </div>
 
@@ -271,7 +271,7 @@ export const SolarEnquiryForm: React.FC<Props> = ({
             className="w-full py-2.5 px-6 rounded-md bg-[#063D2E] hover:bg-[#042E24] text-white font-semibold text-sm tracking-wide transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>Submit Demo Enquiry</span>
+            <span>Submit Solar Enquiry</span>
           </button>
         </div>
       </form>

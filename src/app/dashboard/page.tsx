@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { useEarthSync } from '@/context/EarthSyncContext';
-import { DemoDataNotice } from '@/components/DemoDataNotice';
 import { 
   Recycle, 
   Sun, 
@@ -13,9 +12,7 @@ import {
   Activity,
   Award,
   Layers,
-  ChevronRight,
-  ShieldCheck,
-  TrendingUp
+  ChevronRight
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -32,22 +29,16 @@ export default function DashboardPage() {
 
   // Solar aggregate estimation
   const totalSolarCapacityKw = solarEnquiries.reduce(
-    (sum, e) => sum + (e.suggestedCapacityKw || 3),
+    (sum, e) => sum + (e.suggestedCapacityKw || 0),
     0
   );
   const annualSolarSavingsInr = solarEnquiries.reduce(
-    (sum, e) => sum + (e.monthlySavingsInr ? e.monthlySavingsInr * 12 : 36000),
+    (sum, e) => sum + (e.monthlySavingsInr ? e.monthlySavingsInr * 12 : 0),
     0
   );
 
-  const hasUserCreatedEntries =
-    pickups.some((p) => !p.isSample) || solarEnquiries.some((e) => !e.isSample);
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8 animate-in fade-in duration-300">
-      {/* Demo notice banner */}
-      <DemoDataNotice hasUserEntries={hasUserCreatedEntries} />
-
       {/* Dashboard Top Header */}
       <div className="bg-white border border-stone-200 rounded-xl p-6 sm:p-8 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -331,40 +322,41 @@ export default function DashboardPage() {
           <span className="text-xs text-stone-400 font-medium">{activities.length} total events</span>
         </div>
 
-        <div className="divide-y divide-stone-100">
-          {activities.slice(0, 5).map((act) => {
-            let icon = <Activity className="w-4 h-4 text-stone-500" />;
-            if (act.type === 'waste_pickup') {
-              icon = <Recycle className="w-4 h-4 text-emerald-700" />;
-            } else if (act.type === 'waste_collected') {
-              icon = <Sparkles className="w-4 h-4 text-amber-500" />;
-            } else if (act.type === 'solar_enquiry') {
-              icon = <Sun className="w-4 h-4 text-amber-600" />;
-            } else if (act.type === 'reward_redeemed') {
-              icon = <Award className="w-4 h-4 text-emerald-700" />;
-            }
+        {activities.length === 0 ? (
+          <div className="py-8 text-center text-xs text-stone-500">
+            No platform activity recorded yet. Start by scheduling a recyclable waste pickup or modeling your rooftop solar.
+          </div>
+        ) : (
+          <div className="divide-y divide-stone-100">
+            {activities.slice(0, 5).map((act) => {
+              let icon = <Activity className="w-4 h-4 text-stone-500" />;
+              if (act.type === 'waste_pickup') {
+                icon = <Recycle className="w-4 h-4 text-emerald-700" />;
+              } else if (act.type === 'waste_collected') {
+                icon = <Sparkles className="w-4 h-4 text-amber-500" />;
+              } else if (act.type === 'solar_enquiry') {
+                icon = <Sun className="w-4 h-4 text-amber-600" />;
+              } else if (act.type === 'reward_redeemed') {
+                icon = <Award className="w-4 h-4 text-emerald-700" />;
+              }
 
-            return (
-              <div key={act.id} className="py-3 flex items-start justify-between gap-3 text-xs">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-stone-50 border border-stone-100 shrink-0 mt-0.5">{icon}</div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-stone-900">{act.title}</span>
-                      {act.isSample && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-stone-100 text-stone-500 uppercase tracking-wide">
-                          Sample
-                        </span>
-                      )}
+              return (
+                <div key={act.id} className="py-3 flex items-start justify-between gap-3 text-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-lg bg-stone-50 border border-stone-100 shrink-0 mt-0.5">{icon}</div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-stone-900">{act.title}</span>
+                      </div>
+                      <p className="text-stone-500 mt-0.5">{act.description}</p>
                     </div>
-                    <p className="text-stone-500 mt-0.5">{act.description}</p>
                   </div>
+                  <span className="text-[11px] text-stone-400 shrink-0 font-medium">{act.timestamp}</span>
                 </div>
-                <span className="text-[11px] text-stone-400 shrink-0 font-medium">{act.timestamp}</span>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -31,21 +31,20 @@ export default function PrivacyPolicyPage() {
           Privacy Policy
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
-          Effective date: October 2026. This privacy statement explains how EarthSync handles user data, local storage mechanisms, and operational demo records.
+          Effective date: October 2026. This privacy statement explains how EarthSync handles user data, client-side persistence, and operational requests.
         </p>
       </div>
 
       {/* Context Alert */}
-      <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 sm:p-5 text-amber-900">
+      <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-4 sm:p-5 text-emerald-950">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
           <div className="text-xs sm:text-sm space-y-1">
-            <span className="font-bold text-amber-950 uppercase tracking-wider text-xs block">
-              Academic Prototype Notice
+            <span className="font-bold text-emerald-950 uppercase tracking-wider text-xs block">
+              Privacy First Architecture
             </span>
-            <p className="text-amber-800 leading-relaxed">
-              EarthSync is currently an academic project and pre-seed product prototype for the Essentials of Business Management curriculum. 
-              No sensitive financial credentials, government IDs, or Aadhaar numbers are collected or stored.
+            <p className="text-emerald-900/80 leading-relaxed">
+              EarthSync prioritizes user privacy. Operational records and profile preferences are persisted client-side in browser storage. No sensitive financial credentials or government identity records are collected.
             </p>
           </div>
         </div>
@@ -60,12 +59,12 @@ export default function PrivacyPolicyPage() {
             <span>1. Client-Side Data Storage (Local Storage)</span>
           </h2>
           <p>
-            In this current demonstration MVP, all operational records (including recyclable waste pickup requests, solar feasibility inputs, SolarSaathi enquiries, and GreenPoints balances) are persisted locally within your web browser using HTML5 LocalStorage.
+            Operational records (including recyclable waste pickup requests, solar feasibility inputs, SolarSaathi enquiries, and GreenPoints balances) are persisted locally within your web browser using HTML5 LocalStorage.
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
             <li>Your submitted requests remain in your individual browser instance.</li>
-            <li>No data is transmitted to centralized commercial tracking servers.</li>
-            <li>You can clear your stored data at any time from the Profile page via the Reset Local Data control or through your browser settings.</li>
+            <li>No data is transmitted to centralized commercial ad-tracking servers.</li>
+            <li>You can clear your stored data at any time from the Profile page via the Clear Stored Browser Data control or through your browser settings.</li>
           </ul>
         </div>
 

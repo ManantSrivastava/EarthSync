@@ -11,9 +11,6 @@ import {
   TimeSlot 
 } from '@/types';
 import { 
-  INITIAL_SAMPLE_PICKUPS, 
-  INITIAL_SAMPLE_ENQUIRIES, 
-  INITIAL_SAMPLE_ACTIVITIES, 
   WASTE_CATEGORIES,
   REWARD_ITEMS 
 } from '@/data/constants';
@@ -48,29 +45,36 @@ interface EarthSyncContextType {
   redeemReward: (rewardId: string) => { success: boolean; error?: string };
   dismissToast: (id: string) => void;
   showToast: (type: 'success' | 'info' | 'warning' | 'error', title: string, message: string) => void;
+  updateProfile: (profile: Partial<UserProfile>) => void;
+  login: (email: string, name?: string) => void;
+  logout: () => void;
+  clearUserData: () => void;
   resetAllData: () => void;
   loadSampleData: () => void;
+  deletePickup: (id: string) => void;
+  deleteSolarEnquiry: (id: string) => void;
+  adjustUserPoints: (pointsDelta: number, reason: string) => void;
 }
 
 const EarthSyncContext = createContext<EarthSyncContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
-  PICKUPS: 'earthsync_pickups_v1',
-  ENQUIRIES: 'earthsync_solar_enquiries_v1',
-  ACTIVITIES: 'earthsync_activities_v1',
-  PROFILE: 'earthsync_profile_v1',
-  REDEEMED: 'earthsync_redeemed_v1',
-  INITIALIZED: 'earthsync_initialized_v1',
+  PICKUPS: 'earthsync_pickups_v2',
+  ENQUIRIES: 'earthsync_solar_enquiries_v2',
+  ACTIVITIES: 'earthsync_activities_v2',
+  PROFILE: 'earthsync_profile_v2',
+  REDEEMED: 'earthsync_redeemed_v2',
+  INITIALIZED: 'earthsync_initialized_v2',
 };
 
 const DEFAULT_PROFILE: UserProfile = {
-  name: 'Aarav Mehta',
-  email: 'aarav.m@college.edu',
-  collegeId: 'BM-2026-8842',
-  department: 'Business & Environmental Management',
-  campusLocation: 'North Campus Residency, Hall 3',
-  greenPointsBalance: 117, // Matches the initial collected e-waste sample
-  lifetimePointsEarned: 117,
+  name: '',
+  email: '',
+  collegeId: '',
+  department: '',
+  campusLocation: '',
+  greenPointsBalance: 0,
+  lifetimePointsEarned: 0,
 };
 
 export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
@@ -102,17 +106,17 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       const storedInit = localStorage.getItem(STORAGE_KEYS.INITIALIZED);
       
       if (!storedInit) {
-        // First run: Seed with realistic sample baseline
-        localStorage.setItem(STORAGE_KEYS.PICKUPS, JSON.stringify(INITIAL_SAMPLE_PICKUPS));
-        localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify(INITIAL_SAMPLE_ENQUIRIES));
-        localStorage.setItem(STORAGE_KEYS.ACTIVITIES, JSON.stringify(INITIAL_SAMPLE_ACTIVITIES));
+        // First run: Initialize clean without fake demo records
+        localStorage.setItem(STORAGE_KEYS.PICKUPS, JSON.stringify([]));
+        localStorage.setItem(STORAGE_KEYS.ENQUIRIES, JSON.stringify([]));
+        localStorage.setItem(STORAGE_KEYS.ACTIVITIES, JSON.stringify([]));
         localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(DEFAULT_PROFILE));
         localStorage.setItem(STORAGE_KEYS.REDEEMED, JSON.stringify([]));
         localStorage.setItem(STORAGE_KEYS.INITIALIZED, 'true');
 
-        setPickups(INITIAL_SAMPLE_PICKUPS);
-        setSolarEnquiries(INITIAL_SAMPLE_ENQUIRIES);
-        setActivities(INITIAL_SAMPLE_ACTIVITIES);
+        setPickups([]);
+        setSolarEnquiries([]);
+        setActivities([]);
         setUserProfile(DEFAULT_PROFILE);
         setRedeemedRewards([]);
       } else {
@@ -130,10 +134,9 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (err) {
       console.warn('LocalStorage access warning in EarthSyncContext:', err);
-      // Fallback in-memory
-      setPickups(INITIAL_SAMPLE_PICKUPS);
-      setSolarEnquiries(INITIAL_SAMPLE_ENQUIRIES);
-      setActivities(INITIAL_SAMPLE_ACTIVITIES);
+      setPickups([]);
+      setSolarEnquiries([]);
+      setActivities([]);
       setUserProfile(DEFAULT_PROFILE);
     } finally {
       setIsHydrated(true);
@@ -186,7 +189,7 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Add Pickup Request
+  // Add Pickup
   const addPickup = (data: {
     category: WasteCategoryId;
     quantityKg: number;
@@ -195,7 +198,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
     timeSlot: TimeSlot;
     notes?: string;
   }) => {
-    if (!data.category) return { success: false, error: 'Please select a waste category.' };
     if (!data.quantityKg || data.quantityKg <= 0) return { success: false, error: 'Please enter a valid weight in kg (> 0).' };
     if (!data.pickupAddress || data.pickupAddress.trim().length < 5) return { success: false, error: 'Please enter a complete pickup address (at least 5 characters).' };
     if (!data.preferredDate) return { success: false, error: 'Please select a pickup date.' };
@@ -216,7 +218,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       status: 'Requested',
       pointsEarned: 0,
       createdAt: new Date().toISOString(),
-      isSample: false,
     };
 
     const updatedPickups = [newPickup, ...pickups];
@@ -228,7 +229,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       description: `Scheduled for ${data.preferredDate} (${data.timeSlot}). Awaiting courier confirmation.`,
       timestamp: 'Just now',
       type: 'waste_pickup',
-      isSample: false,
     };
     saveActivities([newActivity, ...activities]);
 
@@ -260,7 +260,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       description: `Cancelled request for ${target.quantityKg} kg scheduled for ${target.preferredDate}.`,
       timestamp: 'Just now',
       type: 'system',
-      isSample: false,
     };
     saveActivities([newActivity, ...activities]);
 
@@ -294,7 +293,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
         description: `Verified collection of ${finalWeight} kg ${target.categoryLabel}. Thank you for recycling!`,
         timestamp: 'Just now',
         type: 'waste_collected',
-        isSample: false,
       };
       saveActivities([activity, ...activities]);
 
@@ -317,6 +315,13 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
     savePickups(updated);
   };
 
+  // Delete / Archive Pickup (Admin)
+  const deletePickup = (id: string) => {
+    const updated = pickups.filter((p) => p.id !== id);
+    savePickups(updated);
+    showToast('info', 'Record Removed', `Pickup request ${id} removed from system.`);
+  };
+
   // Update Solar Enquiry Status
   const updateSolarEnquiryStatus = (id: string, newStatus: SolarEnquiry['status']) => {
     const target = solarEnquiries.find((e) => e.id === id);
@@ -333,11 +338,45 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       description: `Lead for ${target.fullName} (${target.city}) moved to ${newStatus}.`,
       timestamp: 'Just now',
       type: 'solar_enquiry',
-      isSample: false,
     };
     saveActivities([activity, ...activities]);
 
     showToast('info', 'Enquiry Status Updated', `Enquiry for ${target.fullName} is now ${newStatus}.`);
+  };
+
+  // Delete / Archive Solar Enquiry (Admin)
+  const deleteSolarEnquiry = (id: string) => {
+    const updated = solarEnquiries.filter((e) => e.id !== id);
+    saveSolarEnquiries(updated);
+    showToast('info', 'Lead Archived', `Solar enquiry ${id} removed.`);
+  };
+
+  // Adjust User GreenPoints (Admin)
+  const adjustUserPoints = (pointsDelta: number, reason: string) => {
+    const newBalance = Math.max(0, userProfile.greenPointsBalance + pointsDelta);
+    const newLifetime = pointsDelta > 0 
+      ? userProfile.lifetimePointsEarned + pointsDelta 
+      : userProfile.lifetimePointsEarned;
+    const updated = {
+      ...userProfile,
+      greenPointsBalance: newBalance,
+      lifetimePointsEarned: newLifetime,
+    };
+    saveProfile(updated);
+
+    const activity: ActivityItem = {
+      id: `act-${Date.now()}`,
+      title: pointsDelta >= 0 ? `Admin Credit: +${pointsDelta} pts` : `Admin Adjustment: ${pointsDelta} pts`,
+      description: reason || 'Administrative balance adjustment',
+      timestamp: 'Just now',
+      type: 'system',
+    };
+    saveActivities([activity, ...activities]);
+    showToast(
+      'success',
+      'Points Adjusted',
+      `Account updated by ${pointsDelta >= 0 ? '+' : ''}${pointsDelta} pts. New balance: ${newBalance} pts.`
+    );
   };
 
   // Submit Solar Enquiry
@@ -357,7 +396,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       id: `sol-${Date.now()}`,
       status: 'Enquiry Received',
       submittedAt: new Date().toISOString(),
-      isSample: false,
     };
 
     const updated = [newEnquiry, ...solarEnquiries];
@@ -369,7 +407,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       description: `Provider matching initiated for ${data.city}. System Type: ${data.systemType}.`,
       timestamp: 'Just now',
       type: 'solar_enquiry',
-      isSample: false,
     };
     saveActivities([activity, ...activities]);
 
@@ -411,7 +448,6 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
       description: `Redeemed ${reward.pointsCost} GreenPoints. Voucher coupon generated in profile.`,
       timestamp: 'Just now',
       type: 'reward_redeemed',
-      isSample: false,
     };
     saveActivities([activity, ...activities]);
 
@@ -424,29 +460,43 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
     return { success: true };
   };
 
-  // Reset to default sample data
-  const loadSampleData = () => {
-    savePickups(INITIAL_SAMPLE_PICKUPS);
-    saveSolarEnquiries(INITIAL_SAMPLE_ENQUIRIES);
-    saveActivities(INITIAL_SAMPLE_ACTIVITIES);
+  // Update user profile explicitly entered by user
+  const updateProfile = (profileData: Partial<UserProfile>) => {
+    const updated = { ...userProfile, ...profileData };
+    saveProfile(updated);
+    showToast('success', 'Profile Updated', 'Your profile details have been saved.');
+  };
+
+  // User login (stored locally for frontend demonstration)
+  const login = (email: string, name?: string) => {
+    const updated: UserProfile = {
+      ...userProfile,
+      email: email.trim(),
+      name: name ? name.trim() : (userProfile.name || email.split('@')[0]),
+    };
+    saveProfile(updated);
+    showToast('success', 'Signed In', `Welcome, ${updated.name || 'User'}!`);
+  };
+
+  // User logout
+  const logout = () => {
     saveProfile(DEFAULT_PROFILE);
-    saveRedeemed([]);
-    showToast('info', 'Demo Data Restored', 'Standard demonstration records and baseline metrics loaded.');
+    showToast('info', 'Signed Out', 'You have been signed out.');
   };
 
   // Reset to clean user state
-  const resetAllData = () => {
-    const cleanProfile: UserProfile = {
-      ...DEFAULT_PROFILE,
-      greenPointsBalance: 0,
-      lifetimePointsEarned: 0,
-    };
+  const clearUserData = () => {
     savePickups([]);
     saveSolarEnquiries([]);
     saveActivities([]);
-    saveProfile(cleanProfile);
+    saveProfile(DEFAULT_PROFILE);
     saveRedeemed([]);
-    showToast('info', 'Clean State Active', 'All demo pickups, enquiries, and points have been cleared.');
+    showToast('info', 'Data Cleared', 'All stored user activity has been cleared.');
+  };
+
+  const resetAllData = clearUserData;
+  const loadSampleData = () => {
+    // No-op for demo baseline removal
   };
 
   return (
@@ -467,8 +517,15 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
         redeemReward,
         dismissToast,
         showToast,
+        updateProfile,
+        login,
+        logout,
+        clearUserData,
         resetAllData,
         loadSampleData,
+        deletePickup,
+        deleteSolarEnquiry,
+        adjustUserPoints,
       }}
     >
       {children}

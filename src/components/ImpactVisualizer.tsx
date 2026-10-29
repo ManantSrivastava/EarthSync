@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useEarthSync } from '@/context/EarthSyncContext';
 import { WASTE_CATEGORIES, SOLAR_BENCHMARK_ASSUMPTIONS } from '@/data/constants';
 import { 
@@ -15,28 +15,16 @@ import {
 
 export const ImpactVisualizer: React.FC = () => {
   const { pickups, solarEnquiries } = useEarthSync();
-  const [dataScope, setDataScope] = useState<'all' | 'userOnly'>('all');
-
-  // Filter based on scope
-  const activePickups = pickups.filter((p) => {
-    if (dataScope === 'userOnly') return !p.isSample;
-    return true;
-  });
-
-  const activeEnquiries = solarEnquiries.filter((e) => {
-    if (dataScope === 'userOnly') return !e.isSample;
-    return true;
-  });
 
   // Aggregate waste calculations
-  const totalWasteKg = activePickups.reduce((acc, p) => acc + p.quantityKg, 0);
-  const collectedWasteKg = activePickups
+  const totalWasteKg = pickups.reduce((acc, p) => acc + p.quantityKg, 0);
+  const collectedWasteKg = pickups
     .filter((p) => p.status === 'Collected')
     .reduce((acc, p) => acc + p.quantityKg, 0);
 
   // CO2 avoided from recycled waste
   let wasteCo2AvoidedKg = 0;
-  activePickups
+  pickups
     .filter((p) => p.status === 'Collected')
     .forEach((p) => {
       const cat = WASTE_CATEGORIES.find((c) => c.id === p.category);
@@ -45,8 +33,8 @@ export const ImpactVisualizer: React.FC = () => {
     });
 
   // Solar aggregate (based on logged enquiries)
-  const totalSolarCapacityKw = activeEnquiries.reduce(
-    (acc, e) => acc + (e.suggestedCapacityKw || 3),
+  const totalSolarCapacityKw = solarEnquiries.reduce(
+    (acc, e) => acc + (e.suggestedCapacityKw || 0),
     0
   );
   // Solar annual generation estimate (capacity * 4.8 hrs * 0.78 * 365)
@@ -56,18 +44,17 @@ export const ImpactVisualizer: React.FC = () => {
   const solarCo2AvoidedKg = Math.round(
     annualSolarGenerationKwh * SOLAR_BENCHMARK_ASSUMPTIONS.co2FactorPerKwh
   );
-  const annualSolarSavingsInr = activeEnquiries.reduce(
-    (acc, e) => acc + (e.monthlySavingsInr ? e.monthlySavingsInr * 12 : 36000),
+  const annualSolarSavingsInr = solarEnquiries.reduce(
+    (acc, e) => acc + (e.monthlySavingsInr ? e.monthlySavingsInr * 12 : 0),
     0
   );
 
   // Total carbon metric
   const totalCo2AvoidedKg = Math.round(wasteCo2AvoidedKg + solarCo2AvoidedKg);
-  const treesEquivalent = Math.max(
-    1,
-    Math.round(totalCo2AvoidedKg / SOLAR_BENCHMARK_ASSUMPTIONS.treeAbsorptionKgPerYr)
-  );
-  // Water conserved metric: ~30 liters per kg of paper/metal/plastic recycled
+  const treesEquivalent = totalCo2AvoidedKg > 0
+    ? Math.round(totalCo2AvoidedKg / SOLAR_BENCHMARK_ASSUMPTIONS.treeAbsorptionKgPerYr)
+    : 0;
+  // Water conserved metric: ~28 liters per kg of recycled material
   const waterSavedLiters = Math.round(collectedWasteKg * 28);
 
   // Category breakdown for Donut Chart
@@ -75,7 +62,7 @@ export const ImpactVisualizer: React.FC = () => {
   WASTE_CATEGORIES.forEach((cat) => {
     categoryTotals[cat.id] = 0;
   });
-  activePickups.forEach((p) => {
+  pickups.forEach((p) => {
     categoryTotals[p.category] = (categoryTotals[p.category] || 0) + p.quantityKg;
   });
 
@@ -117,15 +104,12 @@ export const ImpactVisualizer: React.FC = () => {
     return acc;
   }, []);
 
-  // Monthly trends for Bar Chart (last 5 months mock + current month live)
-  const monthlyData = [
-    { month: 'Jun', baseline: 42, live: 0 },
-    { month: 'Jul', baseline: 68, live: 0 },
-    { month: 'Aug', baseline: 55, live: 0 },
-    { month: 'Sep', baseline: 84, live: 0 },
-    { month: 'Oct (Now)', baseline: 48.7, live: Math.round(totalWasteKg) },
-  ];
-  const maxBarValue = 100;
+  // Waste category items for breakdown
+  const activeCategories = WASTE_CATEGORIES.map((cat) => ({
+    name: cat.name,
+    weight: categoryTotals[cat.id] || 0,
+  }));
+  const maxBarValue = Math.max(20, Math.ceil(Math.max(...activeCategories.map((c) => c.weight), 10) * 1.2));
 
   return (
     <div className="space-y-6">
@@ -140,29 +124,8 @@ export const ImpactVisualizer: React.FC = () => {
             Transparently computed from physical waste diverted and modeled rooftop solar generation.
           </p>
         </div>
-
-        {/* Data Scope Toggle */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl self-stretch sm:self-auto text-xs font-semibold">
-          <button
-            onClick={() => setDataScope('all')}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
-              dataScope === 'all'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Combined Baseline ({pickups.length} items)
-          </button>
-          <button
-            onClick={() => setDataScope('userOnly')}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
-              dataScope === 'userOnly'
-                ? 'bg-emerald-700 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            My Live Activity Only ({pickups.filter((p) => !p.isSample).length})
-          </button>
+        <div className="text-xs text-slate-500 font-medium">
+          {pickups.length} waste requests recorded
         </div>
       </div>
 
@@ -250,108 +213,111 @@ export const ImpactVisualizer: React.FC = () => {
         <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-1">
-              <h4 className="font-bold text-slate-900 text-sm">Monthly Recycling Diversion (kg)</h4>
-              <span className="text-[11px] text-slate-400">Pure SVG • Zero-Lag</span>
+              <h4 className="font-bold text-slate-900 text-sm">Recycling Diversion by Category (kg)</h4>
+              <span className="text-[11px] text-slate-400">Live Data</span>
             </div>
             <p className="text-xs text-slate-500 mb-6">
-              Track landfill diversion volume over recent project operating periods.
+              Track landfill diversion volume across recyclable material streams.
             </p>
 
-            {/* SVG Bar Chart */}
-            <div className="w-full">
-              <svg viewBox="0 0 500 220" className="w-full h-52 overflow-visible">
-                {/* Horizontal Gridlines */}
-                {[0, 25, 50, 75, 100].map((val) => {
-                  const y = 170 - (val / maxBarValue) * 140;
-                  return (
-                    <g key={val}>
-                      <line
-                        x1="35"
-                        y1={y}
-                        x2="480"
-                        y2={y}
-                        stroke="#e2e8f0"
-                        strokeDasharray="3 3"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x="25"
-                        y={y + 4}
-                        textAnchor="end"
-                        className="text-[10px] fill-slate-400"
-                      >
-                        {val}
-                      </text>
-                    </g>
-                  );
-                })}
+            {/* SVG Bar Chart or Empty State */}
+            {totalWasteKg === 0 ? (
+              <div className="py-12 text-center text-xs text-slate-500 flex flex-col items-center justify-center">
+                <Recycle className="w-8 h-8 text-slate-300 mb-2" />
+                <p className="font-semibold text-slate-700 text-sm">You haven&apos;t submitted any waste requests yet.</p>
+                <p className="text-xs text-slate-400 mt-1 max-w-xs">Schedule a pickup to start tracking material diversion trends.</p>
+                <a
+                  href="/waste"
+                  className="mt-4 px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs transition-colors"
+                >
+                  Explore Smart Waste
+                </a>
+              </div>
+            ) : (
+              <div className="w-full">
+                <svg viewBox="0 0 500 220" className="w-full h-52 overflow-visible">
+                  {/* Horizontal Gridlines */}
+                  {[0, 25, 50, 75, 100].map((pct) => {
+                    const val = Math.round((pct / 100) * maxBarValue);
+                    const y = 170 - (pct / 100) * 140;
+                    return (
+                      <g key={pct}>
+                        <line
+                          x1="35"
+                          y1={y}
+                          x2="480"
+                          y2={y}
+                          stroke="#e2e8f0"
+                          strokeDasharray="3 3"
+                          strokeWidth="1"
+                        />
+                        <text
+                          x="25"
+                          y={y + 4}
+                          textAnchor="end"
+                          className="text-[10px] fill-slate-400"
+                        >
+                          {val}
+                        </text>
+                      </g>
+                    );
+                  })}
 
-                {/* Bars */}
-                {monthlyData.map((d, idx) => {
-                  const x = 55 + idx * 85;
-                  const barWidth = 44;
-                  const value = dataScope === 'userOnly' ? (idx === 4 ? d.live : 0) : Math.max(d.baseline, d.live);
-                  const barHeight = (value / maxBarValue) * 140;
-                  const y = 170 - barHeight;
+                  {/* Bars */}
+                  {activeCategories.slice(0, 6).map((d, idx) => {
+                    const x = 50 + idx * 72;
+                    const barWidth = 38;
+                    const value = d.weight;
+                    const barHeight = maxBarValue > 0 ? (value / maxBarValue) * 140 : 0;
+                    const y = 170 - barHeight;
 
-                  return (
-                    <g key={d.month} className="group cursor-pointer">
-                      {/* Bar Fill */}
-                      <rect
-                        x={x}
-                        y={y}
-                        width={barWidth}
-                        height={Math.max(4, barHeight)}
-                        rx="6"
-                        className={`transition-all duration-300 ${
-                          idx === 4
-                            ? 'fill-emerald-600 hover:fill-emerald-700'
-                            : 'fill-emerald-900/60 hover:fill-emerald-800'
-                        }`}
-                      />
-                      {/* Value label on top */}
-                      <text
-                        x={x + barWidth / 2}
-                        y={y - 6}
-                        textAnchor="middle"
-                        className="text-[11px] font-bold fill-slate-700 opacity-90"
-                      >
-                        {value > 0 ? `${value}kg` : '0'}
-                      </text>
-                      {/* X-axis Month Label */}
-                      <text
-                        x={x + barWidth / 2}
-                        y="190"
-                        textAnchor="middle"
-                        className={`text-[11px] font-medium ${
-                          idx === 4 ? 'fill-emerald-700 font-bold' : 'fill-slate-500'
-                        }`}
-                      >
-                        {d.month}
-                      </text>
-                    </g>
-                  );
-                })}
+                    return (
+                      <g key={d.name} className="group cursor-pointer">
+                        {/* Bar Fill */}
+                        <rect
+                          x={x}
+                          y={y}
+                          width={barWidth}
+                          height={Math.max(4, barHeight)}
+                          rx="6"
+                          className="transition-all duration-300 fill-emerald-600 hover:fill-emerald-700"
+                        />
+                        {/* Value label on top */}
+                        <text
+                          x={x + barWidth / 2}
+                          y={y - 6}
+                          textAnchor="middle"
+                          className="text-[11px] font-bold fill-slate-700 opacity-90"
+                        >
+                          {value > 0 ? `${value}kg` : '0'}
+                        </text>
+                        {/* X-axis Label */}
+                        <text
+                          x={x + barWidth / 2}
+                          y="190"
+                          textAnchor="middle"
+                          className="text-[10px] font-medium fill-slate-600"
+                        >
+                          {d.name.split(' ')[0]}
+                        </text>
+                      </g>
+                    );
+                  })}
 
-                {/* X Axis base line */}
-                <line x1="35" y1="170" x2="480" y2="170" stroke="#cbd5e1" strokeWidth="1.5" />
-              </svg>
-            </div>
+                  {/* X Axis base line */}
+                  <line x1="35" y1="170" x2="480" y2="170" stroke="#cbd5e1" strokeWidth="1.5" />
+                </svg>
+              </div>
+            )}
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-500">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded bg-emerald-900/60 inline-block" />
-                <span>Historical Baseline</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded bg-emerald-600 inline-block" />
-                <span>Current Cycle (Live)</span>
-              </span>
-            </div>
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-emerald-600 inline-block" />
+              <span>Verified Scale Weight Diverted</span>
+            </span>
             <span className="text-[11px] text-emerald-700 font-semibold">
-              +18% MoM Recycling Adoption
+              Live Verified Metrics
             </span>
           </div>
         </div>

@@ -1,17 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import './globals.css';
 import { EarthSyncProvider } from '@/context/EarthSyncContext';
 import { Navigation } from '@/components/Navigation';
 import { ToastContainer } from '@/components/ToastContainer';
-import { Leaf, ShieldCheck } from 'lucide-react';
-
-const inter = Inter({
-  variable: '--font-sans',
-  subsets: ['latin'],
-  display: 'swap',
-});
+import { Leaf, ShieldCheck, Lock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'EarthSync — Waste Less. Power More.',
@@ -24,7 +17,7 @@ export const metadata: Metadata = {
     'SolarSaathi',
     'Recyclable Waste',
     'GreenPoints',
-    'Academic Demonstration',
+    'CleanTech Innovation',
   ],
 };
 
@@ -36,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col bg-[#F8FAF7] text-[#17231E] font-sans selection:bg-[#00B884]/20 selection:text-[#063D2E]">
         <EarthSyncProvider>
@@ -87,6 +80,14 @@ export default function RootLayout({
                   <Link href="/terms" className="hover:text-[#063D2E] transition-colors">
                     Terms & Conditions
                   </Link>
+                  <Link 
+                    href="/admin" 
+                    className="hover:text-[#063D2E] text-[#00A86B] font-semibold transition-colors flex items-center gap-1"
+                    title="Operations and Partner Console"
+                  >
+                    <Lock className="w-3 h-3 text-[#00A86B]" />
+                    <span>Admin Portal</span>
+                  </Link>
                 </nav>
               </div>
 
@@ -95,7 +96,7 @@ export default function RootLayout({
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#00B884]" />
                   <span>
-                    Academic Demonstration Prototype • Essentials of Business Management
+                    CleanTech Platform • Sustainable Resource & Solar Solutions
                   </span>
                 </div>
                 <p>
@@ -105,6 +106,7 @@ export default function RootLayout({
             </div>
           </footer>
 
+          {/* Toast Notification Container */}
           <ToastContainer />
         </EarthSyncProvider>
       </body>

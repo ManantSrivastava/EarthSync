@@ -21,7 +21,9 @@ export const GreenPointsStore: React.FC = () => {
             Redeem Points for Sustainable Perks
           </h3>
           <p className="text-xs text-emerald-300/80 mt-1 max-w-md">
-            Points are earned exclusively upon verified waste collections. Sourced from partner merchants and eco-programs.
+            {userProfile.greenPointsBalance === 0
+              ? 'Your GreenPoints balance will appear here once you complete eligible activities.'
+              : 'Points are earned exclusively upon verified waste collections.'}
           </p>
         </div>
 
@@ -35,6 +37,23 @@ export const GreenPointsStore: React.FC = () => {
           <span className="text-[10px] text-emerald-200">GreenPoints</span>
         </div>
       </div>
+
+      {userProfile.greenPointsBalance === 0 && (
+        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
+            <span className="font-semibold">
+              Earn GreenPoints by completing eligible activities.
+            </span>
+          </div>
+          <a
+            href="/waste"
+            className="px-3.5 py-1.5 rounded-md bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-xs transition-colors shrink-0"
+          >
+            Explore Smart Waste
+          </a>
+        </div>
+      )}
 
       {/* Rewards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
