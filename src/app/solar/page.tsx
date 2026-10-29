@@ -108,12 +108,7 @@ export default function SolarSaathiPage() {
       </div>
 
       {/* Active Tab View */}
-      {activeTab === 'calculator' && (
-        <SolarCalculator 
-          onOpenEnquiry={handleOpenEnquiry}
-          onEstimateChange={(details) => setModalInitialData(details)}
-        />
-      )}
+      {activeTab === 'calculator' && <SolarCalculator onOpenEnquiry={handleOpenEnquiry} />}
       {activeTab === 'subsidies' && <SolarSubsidyGuide />}
       {activeTab === 'enquiries' && <SolarEnquiryList onCalculateSolar={() => setActiveTab('calculator')} />}
 

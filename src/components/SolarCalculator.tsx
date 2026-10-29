@@ -26,17 +26,9 @@ interface Props {
     monthlyBill: number;
     roofAreaSqFt: number;
   }) => void;
-  onEstimateChange?: (details: {
-    capacityKw: number;
-    estimatedCost: number;
-    monthlySavings: number;
-    locationState: string;
-    monthlyBill: number;
-    roofAreaSqFt: number;
-  }) => void;
 }
 
-export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry, onEstimateChange }) => {
+export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry }) => {
   const billInputId = useId();
   const tariffInputId = useId();
   const areaInputId = useId();
@@ -62,27 +54,6 @@ export const SolarCalculator: React.FC<Props> = ({ onOpenEnquiry, onEstimateChan
       electricityTariff: region ? region.averageTariff : prev.electricityTariff,
     }));
   };
-
-  React.useEffect(() => {
-    if (onEstimateChange) {
-      onEstimateChange({
-        capacityKw: estimate.suggestedCapacityKw,
-        estimatedCost: estimate.approximateCostInr,
-        monthlySavings: estimate.monthlySavingsInr,
-        locationState: input.locationState,
-        monthlyBill: input.monthlyBill,
-        roofAreaSqFt: input.availableRoofAreaSqFt,
-      });
-    }
-  }, [
-    estimate.suggestedCapacityKw,
-    estimate.approximateCostInr,
-    estimate.monthlySavingsInr,
-    input.locationState,
-    input.monthlyBill,
-    input.availableRoofAreaSqFt,
-    onEstimateChange,
-  ]);
 
   return (
     <div className="space-y-6">
