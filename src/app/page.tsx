@@ -8,9 +8,13 @@ import {
   ArrowRight, 
   CheckCircle2, 
   ShieldCheck, 
-  Layers
+  Layers,
+  Sparkles,
+  Gift,
+  Tag
 } from 'lucide-react';
 import { WindTurbineRotor } from '@/components/WindTurbineRotor';
+import { REWARD_ITEMS } from '@/data/constants';
 
 export default function HomePage() {
   return (
@@ -385,6 +389,75 @@ export default function HomePage() {
             </p>
           </div>
 
+        </div>
+
+        {/* =========================================================================
+            GREENPOINTS BENEFITS & REWARDS CATALOG
+            ========================================================================= */}
+        <div className="pt-6 sm:pt-10 space-y-8 border-t border-[#E2E9E3]">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-[#063D2E] border border-emerald-200">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>Community Benefits & Incentives</span>
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-bold text-[#17231E] tracking-tight">
+              Earn GreenPoints. Unlock Tangible Rewards.
+            </h3>
+            <p className="text-sm text-[#65736B]">
+              Every verified kilogram of sorted recyclable waste earns GreenPoints redeemable for campus dining, native tree plantations, mobility credits, and rooftop solar discounts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {REWARD_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-2xl border border-[#E2E9E3] p-5 shadow-xs hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  {/* Top Badges: Category & Points Cost */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      {item.badge}
+                    </span>
+                    <div className="flex items-center gap-1 text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{item.pointsCost} pts</span>
+                    </div>
+                  </div>
+
+                  {/* Title & Description */}
+                  <div>
+                    <h4 className="font-bold text-[#17231E] text-sm sm:text-base leading-snug">
+                      {item.title}
+                    </h4>
+                    <p className="text-xs text-[#4E5D54] mt-1.5 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Partner Reference */}
+                  <div className="flex items-center gap-1.5 text-[11px] text-[#65736B] pt-1">
+                    <Tag className="w-3 h-3 text-emerald-600 shrink-0" />
+                    <span>
+                      Partner: <strong className="text-[#17231E] font-semibold">{item.partner}</strong>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom Requirement / CTA Link */}
+                <div className="mt-4 pt-3 border-t border-[#E2E9E3]/70">
+                  <Link
+                    href="/waste"
+                    className="w-full py-2 px-3 rounded-lg bg-[#F8FAF7] hover:bg-emerald-50 text-[#65736B] hover:text-[#063D2E] text-xs font-semibold border border-[#E2E9E3] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Gift className="w-3.5 h-3.5 text-[#65736B]" />
+                    <span>Needs {item.pointsCost} More Pts</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
