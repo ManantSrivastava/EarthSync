@@ -87,6 +87,15 @@ export default function AdminPage() {
     } catch {
       // In restricted environments
     }
+
+    const onAdminLogout = () => {
+      setIsAuthenticated(false);
+      setPasskeyInput('');
+    };
+    window.addEventListener('earthsync_admin_logout', onAdminLogout);
+    return () => {
+      window.removeEventListener('earthsync_admin_logout', onAdminLogout);
+    };
   }, []);
 
   const handleLogin = (e?: React.FormEvent) => {

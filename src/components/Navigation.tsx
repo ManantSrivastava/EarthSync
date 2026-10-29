@@ -11,7 +11,9 @@ import {
   Sun,
   Globe,
   ChevronDown,
-  User
+  User,
+  ShieldCheck,
+  LogOut
 } from 'lucide-react';
 
 export const Navigation: React.FC = () => {
@@ -20,6 +22,18 @@ export const Navigation: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'En' | 'Hi'>('En');
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+
+  const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
+
+  const handleAdminLogout = () => {
+    try {
+      sessionStorage.removeItem('earthsync_admin_auth_v2');
+    } catch {
+      // ignore
+    }
+    window.dispatchEvent(new Event('earthsync_admin_logout'));
+    window.location.reload();
+  };
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -104,49 +118,80 @@ export const Navigation: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action: Points Pill, Profile / Sign In, Get Started Button */}
+          {/* Right Action: Admin Badge + Log Out (on /admin) OR Points Pill + Profile / Sign In */}
           <div className="hidden sm:flex items-center gap-2.5 lg:gap-3">
-            {/* GreenPoints Indicator */}
-            <Link
-              href="/waste"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 hover:bg-white border border-[#E2E8F0] text-xs font-semibold text-[#1F2937] hover:border-[#CBD5E1] shadow-2xs transition-all"
-              title="GreenPoints Balance"
-            >
-              <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
-              <span className="text-[12px]">{isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '0'} pts</span>
-            </Link>
-
-            {/* Profile or Sign In Link */}
-            {isHydrated && userProfile.email ? (
-              <Link
-                href="/profile"
-                className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
-                title="Account Profile"
-              >
-                <User className="w-3.5 h-3.5 text-[#00A86B]" />
-                <span className="text-[12px]">{userProfile.name ? userProfile.name.split(' ')[0] : 'Profile'}</span>
-              </Link>
+            {isAdminPage ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#063D2E] text-white text-xs font-bold shadow-2xs">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#00B884]" />
+                  <span>Admin</span>
+                </div>
+                <button
+                  onClick={handleAdminLogout}
+                  className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-rose-50 hover:border-rose-200 text-[#374151] hover:text-rose-700 text-xs font-semibold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer group"
+                  title="Log Out of Admin Portal"
+                >
+                  <LogOut className="w-3.5 h-3.5 text-[#6B7280] group-hover:text-rose-600 transition-colors" />
+                  <span>Log Out</span>
+                </button>
+              </div>
             ) : (
-              <Link
-                href="/login"
-                className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
-                title="Sign In"
-              >
-                <User className="w-3.5 h-3.5 text-[#6B7280]" />
-                <span className="text-[12px]">Sign In</span>
-              </Link>
+              <>
+                {/* GreenPoints Indicator */}
+                <Link
+                  href="/waste"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 hover:bg-white border border-[#E2E8F0] text-xs font-semibold text-[#1F2937] hover:border-[#CBD5E1] shadow-2xs transition-all"
+                  title="GreenPoints Balance"
+                >
+                  <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
+                  <span className="text-[12px]">{isHydrated ? userProfile.greenPointsBalance.toLocaleString() : '0'} pts</span>
+                </Link>
+
+                {/* Profile or Sign In Link */}
+                {isHydrated && userProfile.email ? (
+                  <Link
+                    href="/profile"
+                    className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
+                    title="Account Profile"
+                  >
+                    <User className="w-3.5 h-3.5 text-[#00A86B]" />
+                    <span className="text-[12px]">{userProfile.name ? userProfile.name.split(' ')[0] : 'Profile'}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="px-3 py-1.5 rounded-lg border border-[#E2E8F0] bg-white/90 hover:bg-white text-[#374151] hover:text-[#17231E] text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs hover:border-[#CBD5E1]"
+                    title="Sign In"
+                  >
+                    <User className="w-3.5 h-3.5 text-[#6B7280]" />
+                    <span className="text-[12px]">Sign In</span>
+                  </Link>
+                )}
+              </>
             )}
           </div>
 
-          {/* Mobile Right: Points & Hamburger Button */}
+          {/* Mobile Right: Points/Admin & Hamburger Button */}
           <div className="flex sm:hidden items-center gap-2">
-            <Link
-              href="/waste"
-              className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E2E9E3] text-xs font-semibold text-[#063D2E]"
-            >
-              <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
-              <span>{isHydrated ? userProfile.greenPointsBalance : '0'}</span>
-            </Link>
+            {isAdminPage ? (
+              <button
+                onClick={handleAdminLogout}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-[#063D2E] text-white text-xs font-bold cursor-pointer"
+                title="Admin Log Out"
+              >
+                <ShieldCheck className="w-3 h-3 text-[#00B884]" />
+                <span>Admin</span>
+                <LogOut className="w-3 h-3 ml-1 text-emerald-300" />
+              </button>
+            ) : (
+              <Link
+                href="/waste"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E2E9E3] text-xs font-semibold text-[#063D2E]"
+              >
+                <Sun className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" />
+                <span>{isHydrated ? userProfile.greenPointsBalance : '0'}</span>
+              </Link>
+            )}
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -182,7 +227,18 @@ export const Navigation: React.FC = () => {
             </nav>
 
             <div className="mt-4 pt-4 border-t border-[#E2E9E3] flex flex-col gap-2.5">
-              {isHydrated && userProfile.email ? (
+              {isAdminPage ? (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleAdminLogout();
+                  }}
+                  className="w-full text-center py-2 px-3 rounded-md bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 hover:bg-rose-100 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Log Out (Admin Portal)</span>
+                </button>
+              ) : isHydrated && userProfile.email ? (
                 <Link
                   href="/profile"
                   onClick={() => setMobileMenuOpen(false)}
