@@ -4,14 +4,16 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEarthSync } from '@/context/EarthSyncContext';
-import { Leaf, LogIn, Lock, Mail, AlertCircle, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Leaf, LogIn, Lock, Mail, User, MapPin, AlertCircle, ShieldAlert, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useEarthSync();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [location, setLocation] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,6 +21,11 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (!name.trim() || name.trim().length < 2) {
+      setError('Please enter your full name (at least 2 characters).');
+      return;
+    }
 
     if (!email || !email.includes('@')) {
       setError('Please enter a valid email address.');
@@ -32,7 +39,7 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
     // Explicit user authentication demonstration in localStorage
-    login(email);
+    login(email, name, location);
     setIsSubmitting(false);
     router.push('/profile');
   };
@@ -76,9 +83,28 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Full Name Field */}
             <div>
               <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider mb-1.5">
-                Email Address
+                Full Name <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-[#65736B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Manant Srivastava"
+                  required
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Email Address Field */}
+            <div>
+              <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider mb-1.5">
+                Email Address <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-[#65736B] absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -93,10 +119,11 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Password Field */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider">
-                  Password
+                  Password <span className="text-rose-500">*</span>
                 </label>
               </div>
               <div className="relative">
@@ -107,6 +134,23 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Location / Campus Address Field */}
+            <div>
+              <label className="block text-xs font-semibold text-[#17231E] uppercase tracking-wider mb-1.5">
+                Location / Campus Residency
+              </label>
+              <div className="relative">
+                <MapPin className="w-4 h-4 text-[#65736B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="e.g. North Campus, Hall 3, Jaipur"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-lg border border-[#E2E9E3] focus:outline-none focus:ring-1 focus:ring-[#063D2E] focus:border-[#063D2E] text-sm text-[#17231E] bg-white transition-colors"
                 />
               </div>
@@ -147,4 +191,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

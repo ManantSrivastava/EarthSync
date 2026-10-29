@@ -46,7 +46,7 @@ interface EarthSyncContextType {
   dismissToast: (id: string) => void;
   showToast: (type: 'success' | 'info' | 'warning' | 'error', title: string, message: string) => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
-  login: (email: string, name?: string) => void;
+  login: (email: string, name?: string, campusLocation?: string) => void;
   logout: () => void;
   clearUserData: () => void;
   resetAllData: () => void;
@@ -468,11 +468,12 @@ export const EarthSyncProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // User login (stored locally for frontend demonstration)
-  const login = (email: string, name?: string) => {
+  const login = (email: string, name?: string, campusLocation?: string) => {
     const updated: UserProfile = {
       ...userProfile,
       email: email.trim(),
-      name: name ? name.trim() : (userProfile.name || email.split('@')[0]),
+      name: name && name.trim() ? name.trim() : (userProfile.name || email.split('@')[0]),
+      campusLocation: campusLocation && campusLocation.trim() ? campusLocation.trim() : (userProfile.campusLocation || 'Main Campus'),
     };
     saveProfile(updated);
     showToast('success', 'Signed In', `Welcome, ${updated.name || 'User'}!`);
